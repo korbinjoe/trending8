@@ -4,6 +4,7 @@ import { localeCatalog } from "@/i18n/locales";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
+import { LogoMark } from "./LogoMark";
 
 function navLinkClass(pathname: string, href: string): string {
   const active =
@@ -23,8 +24,8 @@ export function Header() {
   return (
     <header className="site-header">
       <Link href="/" className="logo">
-        <span className="logo-mark" aria-hidden="true">
-          ◆
+        <span className="logo-mark">
+          <LogoMark />
         </span>
         GitHub Trending+
       </Link>

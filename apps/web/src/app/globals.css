@@ -96,9 +96,14 @@ html {
   border-radius: 7px;
   display: grid;
   place-items: center;
-  font-size: 0.875rem;
-  line-height: 1;
   color: var(--color-bg);
+  flex-shrink: 0;
+}
+
+.logo-mark__star {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
 }
 
 .header-end {
