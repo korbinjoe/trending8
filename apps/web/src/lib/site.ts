@@ -18,3 +18,7 @@ export function githubRepoUrl(owner: string, name: string): string {
 export function ossInsightUrl(owner: string, name: string): string {
   return `https://ossinsight.io/analyze/${owner}/${name}`;
 }
+
+export function librariesIoUrl(owner: string, name: string): string {
+  return `https://libraries.io/github/${owner}/${name}`;
+}

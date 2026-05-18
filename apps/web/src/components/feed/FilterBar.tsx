@@ -1,22 +1,25 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { parseAsString, parseAsStringEnum, useQueryState } from "nuqs";
+import { parseAsBoolean, parseAsString, parseAsStringEnum, useQueryState } from "nuqs";
 
 const PERIODS = ["today", "week", "month", "halfYear", "year"] as const;
 const VIEWS = ["velocity", "early"] as const;
+const TOPICS = ["", "ai-agent", "cli", "self-hosted", "devtools"] as const;
 const LANGUAGES = [
-  "",
-  "TypeScript",
-  "JavaScript",
-  "Python",
-  "Rust",
-  "Go",
-] as const;
+  { value: "", labelKey: "allLanguages" as const },
+  { value: "Python", label: "Python" },
+  { value: "TypeScript", label: "TypeScript" },
+  { value: "Rust", label: "Rust" },
+  { value: "Go", label: "Go" },
+  { value: "JavaScript", label: "JavaScript" },
+];
 
 export function FilterBar() {
   const t = useTranslations("filter");
   const tabT = useTranslations("tab");
+  const legendT = useTranslations("legend");
+  const badgeT = useTranslations("badge");
 
   const [view, setView] = useQueryState(
     "view",
@@ -27,59 +30,110 @@ export function FilterBar() {
     parseAsStringEnum([...PERIODS]).withDefault("today"),
   );
   const [lang, setLang] = useQueryState("lang", parseAsString.withDefault(""));
+  const [topic, setTopic] = useQueryState("topic", parseAsString.withDefault(""));
+  const [hideShells, setHideShells] = useQueryState(
+    "hideShells",
+    parseAsBoolean.withDefault(true),
+  );
 
   return (
-    <section className="filters space-y-4 mb-6">
-      <div className="flex flex-wrap gap-2">
+    <>
+      <section className="filters">
+        <div className="filters-row">
+          <label className="visually-hidden" htmlFor="lang-select">
+            {t("language")}
+          </label>
+          <select
+            id="lang-select"
+            className="filter-select"
+            aria-label={t("language")}
+            value={lang}
+            onChange={(e) => setLang(e.target.value || null)}
+          >
+            {LANGUAGES.map((item) => (
+              <option key={item.value || "all"} value={item.value}>
+                {"labelKey" in item ? t(item.labelKey) : item.label}
+              </option>
+            ))}
+          </select>
+
+          <div className="seg seg--period" role="group" aria-label={t("period")}>
+            {PERIODS.map((p) => (
+              <button
+                key={p}
+                type="button"
+                className={period === p ? "is-active" : ""}
+                onClick={() => setPeriod(p)}
+              >
+                {t(p === "halfYear" ? "halfYear" : p)}
+              </button>
+            ))}
+          </div>
+
+          <label className="filter-toggle">
+            <input
+              type="checkbox"
+              checked={hideShells}
+              onChange={(e) => setHideShells(e.target.checked)}
+            />
+            <span>{t("hideShells")}</span>
+          </label>
+        </div>
+
+        <div className="topics" role="group" aria-label="Topics">
+          {TOPICS.map((chip) => (
+            <button
+              key={chip || "all"}
+              type="button"
+              className={`chip ${topic === chip ? "is-on" : ""}`}
+              onClick={() => setTopic(chip || null)}
+            >
+              {chip === "" ? t("topicAll") : chip}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <div className="tabs" role="tablist">
         {VIEWS.map((v) => (
           <button
             key={v}
             type="button"
+            role="tab"
+            aria-selected={view === v}
+            className={view === v ? "is-active" : ""}
             onClick={() => setView(v)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium border ${
-              view === v
-                ? "bg-accent/15 border-accent text-accent"
-                : "border-border text-muted hover:text-text"
-            }`}
           >
             {v === "velocity" ? tabT("velocity") : tabT("early")}
           </button>
         ))}
       </div>
-      <p className="text-xs text-muted">
+
+      <p className="tab-hint">
         {view === "velocity" ? tabT("hintVelocity") : tabT("hintEarly")}
       </p>
-      <div className="flex flex-wrap gap-4">
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="text-muted">{t("language")}</span>
-          <select
-            value={lang}
-            onChange={(e) => setLang(e.target.value || null)}
-            className="bg-surface border border-border rounded-lg px-3 py-2"
-          >
-            <option value="">{t("allLanguages")}</option>
-            {LANGUAGES.filter(Boolean).map((l) => (
-              <option key={l} value={l}>
-                {l}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="text-muted">{t("period")}</span>
-          <select
-            value={period}
-            onChange={(e) => setPeriod(e.target.value as (typeof PERIODS)[number])}
-            className="bg-surface border border-border rounded-lg px-3 py-2"
-          >
-            {PERIODS.map((p) => (
-              <option key={p} value={p}>
-                {t(p === "halfYear" ? "halfYear" : p)}
-              </option>
-            ))}
-          </select>
-        </label>
+
+      <div className="signal-legend" aria-label={legendT("title")}>
+        <span>
+          <strong>{legendT("title")}</strong>
+        </span>
+        <span className="signal-legend__item">
+          <span className="badge-signal badge-signal--trigger">release</span>
+          <span>{legendT("trigger")}</span>
+        </span>
+        <span className="signal-legend__item">
+          <span className="tag tag--license">MIT</span>
+          <span>{legendT("license")}</span>
+        </span>
+        <span className="signal-legend__item">
+          <span className="dot" aria-hidden="true" />
+          <span>{legendT("health")}</span>
+        </span>
+        <span className="signal-legend__item">
+          <span className="badge-signal badge-signal--shell">{badgeT("shell")}</span>
+          <span>{legendT("shell")}</span>
+        </span>
       </div>
-    </section>
+    </>
   );
 }

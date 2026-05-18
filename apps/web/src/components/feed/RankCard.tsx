@@ -1,82 +1,105 @@
 "use client";
 
+import { ChartModal } from "@/components/chart/ChartModal";
+import { Link } from "@/i18n/navigation";
 import type { FeedItem } from "@github-trending/core/types";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
 import { useState } from "react";
-import { ChartModal } from "@/components/chart/ChartModal";
 import { AlternativesStrip } from "./AlternativesStrip";
 import { HealthDot } from "./HealthDot";
+
+const LICENSE_TAGS = new Set([
+  "MIT",
+  "Apache-2.0",
+  "GPL-3.0",
+  "BSD-3-Clause",
+  "ISC",
+]);
 
 interface RankCardProps {
   item: FeedItem;
 }
 
+function signalBadgeClass(trigger: string): string {
+  if (/hn/i.test(trigger)) return "badge-signal badge-signal--hn";
+  if (/shell/i.test(trigger)) return "badge-signal badge-signal--shell";
+  return "badge-signal badge-signal--trigger";
+}
+
 export function RankCard({ item }: RankCardProps) {
   const t = useTranslations();
+  const tabT = useTranslations("tab");
   const [chartOpen, setChartOpen] = useState(false);
   const healthLabel = t(`health.${item.health}`);
+  const hasAltStrip = item.alternatives.length > 0;
 
   return (
-    <>
-      <article
-        className="rank-card block bg-surface border border-border rounded-[10px] p-4 mb-3 hover:bg-surface-hover transition-colors cursor-pointer"
-        onClick={() => {
-          window.location.href = `/repo/${item.owner}/${item.name}`;
-        }}
-      >
-        <div className="flex gap-3 items-start">
-          <span className="text-muted font-mono text-sm w-8 shrink-0">
-            #{item.rank}
-          </span>
-          <div className="flex-1 min-w-0">
-            <h2 className="font-semibold text-base truncate">
-              {item.owner}/{item.name}
-            </h2>
-            <p className="text-sm text-muted line-clamp-2 mt-1">
-              {item.description}
-            </p>
-            <div className="flex flex-wrap items-center gap-3 mt-2">
-              <span className="text-accent font-mono text-sm">
-                +{item.deltaStars}
-              </span>
-              <HealthDot health={item.health} label={healthLabel} />
-              {item.isEarlySignal && (
-                <span className="text-xs text-warn border border-warn/40 px-1.5 rounded">
-                  Early
-                </span>
-              )}
-            </div>
-            <AlternativesStrip
-              alternatives={item.alternatives}
-              compareUrl={item.compareUrl}
-            />
-            <div className="flex gap-2 mt-3" onClick={(e) => e.stopPropagation()}>
-              <button
-                type="button"
-                className="chart-trigger text-xs border border-border px-2.5 py-1 rounded hover:border-accent text-muted hover:text-accent"
-                onClick={() => setChartOpen(true)}
-              >
-                {t("cta.chart")}
-              </button>
-              {item.compareUrl && (
-                <Link
-                  href={item.compareUrl.replace(/^https?:\/\/[^/]+/, "")}
-                  className="text-xs border border-border px-2.5 py-1 rounded hover:border-accent text-muted hover:text-accent"
-                >
-                  {t("cta.compare")}
-                </Link>
-              )}
-            </div>
+    <li className={hasAltStrip ? "rank-item" : undefined}>
+      <Link href={`/repo/${item.owner}/${item.name}`} className="rank-card">
+        <span className="rank-card__rank">{item.rank}</span>
+        <div className="rank-card__body">
+          <div className="rank-card__title">
+            <span className="owner">{item.owner}</span>
+            <span className="repo">/ {item.name}</span>
+            {item.isEarlySignal && (
+              <span className="badge-early">{tabT("early")}</span>
+            )}
           </div>
+          {item.triggers && item.triggers.length > 0 && (
+            <div className="signal-row">
+              {item.triggers.map((trigger) => (
+                <span key={trigger} className={signalBadgeClass(trigger)}>
+                  {trigger}
+                </span>
+              ))}
+            </div>
+          )}
+          {item.description && (
+            <p className="rank-card__desc">{item.description}</p>
+          )}
+          {item.tags.length > 0 && (
+            <div className="tag-list">
+              {item.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className={`tag${LICENSE_TAGS.has(tag) ? " tag--license" : ""}`}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
-      </article>
+        <div className="rank-card__meta">
+          <span className="delta">
+            +{item.deltaStars.toLocaleString()} ★
+          </span>
+          <HealthDot health={item.health} label={healthLabel} />
+          <button
+            type="button"
+            className="btn-ghost chart-trigger"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setChartOpen(true);
+            }}
+          >
+            {t("cta.chart")}
+          </button>
+        </div>
+      </Link>
+      {hasAltStrip && (
+        <AlternativesStrip
+          alternatives={item.alternatives}
+          compareUrl={item.compareUrl}
+        />
+      )}
       <ChartModal
         owner={item.owner}
         name={item.name}
         open={chartOpen}
         onClose={() => setChartOpen(false)}
       />
-    </>
+    </li>
   );
 }

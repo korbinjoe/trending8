@@ -40,6 +40,18 @@ export const FeedResponseSchema = z.object({
   updatedAt: z.string().nullable(),
 });
 
+export const RepoAlternativeDetailSchema = z.object({
+  owner: z.string(),
+  name: z.string(),
+  slug: z.string(),
+  description: z.string(),
+  deltaStars: z.number(),
+  totalStars: z.number(),
+  health: HealthStatusSchema,
+  license: z.string().nullable(),
+  why: z.string(),
+});
+
 export const RepoDetailSchema = z.object({
   owner: z.string(),
   name: z.string(),
@@ -53,10 +65,14 @@ export const RepoDetailSchema = z.object({
   lastPush: z.string().nullable(),
   license: z.string().nullable(),
   language: z.string().nullable(),
+  isEarlySignal: z.boolean(),
+  alternatives: z.array(RepoAlternativeDetailSchema),
+  compareUrl: z.string(),
   urls: z.object({
     github: z.string(),
     starHistory: z.string(),
     ossInsight: z.string(),
+    librariesIo: z.string(),
     bestOfJs: z.string().optional(),
   }),
 });
@@ -84,5 +100,6 @@ export type FeedPeriod = z.infer<typeof FeedPeriodSchema>;
 export type ApiHealthStatus = z.infer<typeof HealthStatusSchema>;
 export type FeedItem = z.infer<typeof FeedItemSchema>;
 export type FeedResponse = z.infer<typeof FeedResponseSchema>;
+export type RepoAlternativeDetail = z.infer<typeof RepoAlternativeDetailSchema>;
 export type RepoDetail = z.infer<typeof RepoDetailSchema>;
 export type CompareResponse = z.infer<typeof CompareResponseSchema>;

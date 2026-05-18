@@ -1,9 +1,9 @@
 import type { HealthStatus } from "@github-trending/core";
 
-const COLORS: Record<HealthStatus, string> = {
-  active: "bg-accent",
-  fair: "bg-warn",
-  low: "bg-danger",
+const DOT_CLASS: Record<HealthStatus, string> = {
+  active: "dot",
+  fair: "dot dot--warn",
+  low: "dot dot--bad",
 };
 
 interface HealthDotProps {
@@ -13,9 +13,9 @@ interface HealthDotProps {
 
 export function HealthDot({ health, label }: HealthDotProps) {
   return (
-    <span className="inline-flex items-center gap-1.5 text-xs text-muted" title={label}>
-      <span className={`w-2 h-2 rounded-full ${COLORS[health]}`} />
-      {label}
+    <span className="health">
+      <span className={DOT_CLASS[health]} aria-hidden="true" />
+      <span>{label}</span>
     </span>
   );
 }

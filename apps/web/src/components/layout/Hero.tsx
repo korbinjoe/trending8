@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
 interface HeroProps {
@@ -13,11 +14,23 @@ export function Hero({ updatedAt }: HeroProps) {
     : "—";
 
   return (
-    <section className="py-8">
-      <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">
-        {t("title")}
-      </h1>
-      <p className="text-sm text-muted">{t("meta", { date })}</p>
+    <section className="hero">
+      <h1>{t("title")}</h1>
+      <p className="hero-meta">
+        {t.rich("meta", {
+          date,
+          rules: (chunks) => (
+            <Link href="/about#ranking">{chunks}</Link>
+          ),
+        })}
+      </p>
+      <p className="hero-meta">
+        {t.rich("tzNote", {
+          glossary: (chunks) => (
+            <Link href="/about#signals">{chunks}</Link>
+          ),
+        })}
+      </p>
     </section>
   );
 }

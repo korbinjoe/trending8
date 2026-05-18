@@ -1,33 +1,22 @@
 import type { GitHubGraphQLClient } from "./client";
+import { enrichCommits30d } from "./commit-enrich";
 import {
   DAILY_CANDIDATE_CAP_PER_LANGUAGE,
   getSearchPushedSince,
   MIN_STARS_SEARCH,
   type IngestLanguage,
 } from "./config";
+import type { SearchRepoNode } from "./search-node";
 
-export interface SearchRepoNode {
-  databaseId: string;
-  nameWithOwner: string;
-  stargazerCount: number;
-  forkCount: number;
-  pushedAt: string | null;
-  description: string | null;
-  isFork: boolean;
-  primaryLanguage: { name: string } | null;
-  licenseInfo: { spdxId: string } | null;
-  repositoryTopics: { nodes: { topic: { name: string } }[] };
-  defaultBranchRef: {
-    target: {
-      history?: { totalCount: number };
-    } | null;
-  } | null;
-}
+export type { SearchRepoNode } from "./search-node";
+
+/** Smaller pages avoid GitHub nginx 502 on heavy nested fields. */
+const SEARCH_PAGE_SIZE = 30;
 
 const SEARCH_QUERY = `
 query SearchRepos($q: String!, $after: String) {
   rateLimit { cost remaining resetAt }
-  search(type: REPOSITORY, query: $q, first: 50, after: $after) {
+  search(type: REPOSITORY, query: $q, first: ${SEARCH_PAGE_SIZE}, after: $after) {
     pageInfo { hasNextPage endCursor }
     nodes {
       ... on Repository {
@@ -42,13 +31,6 @@ query SearchRepos($q: String!, $after: String) {
         licenseInfo { spdxId }
         repositoryTopics(first: 10) {
           nodes { topic { name } }
-        }
-        defaultBranchRef {
-          target {
-            ... on Commit {
-              history(since: $since) { totalCount }
-            }
-          }
         }
       }
     }
@@ -84,7 +66,7 @@ export async function searchCandidatesForLanguage(
   while (results.length < cap) {
     const response: { data: SearchResult } = await client.query<SearchResult>(
       SEARCH_QUERY,
-      { q, after, since: sinceIso },
+      { q, after },
     );
     const data: SearchResult = response.data;
 
@@ -92,6 +74,7 @@ export async function searchCandidatesForLanguage(
       (n: SearchRepoNode | null): n is SearchRepoNode =>
         n !== null && Boolean(n.nameWithOwner),
     );
+    await enrichCommits30d(client, nodes, sinceIso);
     results.push(...nodes);
 
     if (!data.search.pageInfo.hasNextPage || results.length >= cap) {

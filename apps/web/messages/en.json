@@ -9,18 +9,37 @@
   },
   "hero": {
     "title": "See what's heating up on GitHub in 3 minutes a day",
-    "meta": "Updated {date} UTC · Awesome/zombie repos filtered"
+    "meta": "Updated {date} UTC · Awesome/zombie repos filtered · <rules>Ranking rules</rules>",
+    "tzNote": "All periods use UTC boundaries · <glossary>Signal glossary</glossary>"
   },
   "filter": {
-    "language": "Programming language",
+    "language": "Language",
     "allLanguages": "All languages",
-    "period": "Time range",
+    "period": "Period",
     "today": "Today",
     "week": "Week",
     "month": "Month",
     "halfYear": "6 months",
     "year": "Year",
-    "topicAll": "All topics"
+    "topicAll": "All topics",
+    "hideShells": "Hide empty shells"
+  },
+  "legend": {
+    "title": "Card signals",
+    "trigger": "Why hot now",
+    "license": "License",
+    "health": "Sustainability",
+    "shell": "Empty shell"
+  },
+  "badge": {
+    "shell": "Shell risk"
+  },
+  "alt": {
+    "consider": "Also consider",
+    "compare": "Compare"
+  },
+  "feed": {
+    "loadMore": "Load more"
   },
   "tab": {
     "velocity": "Velocity",
@@ -47,12 +66,60 @@
   "footer": {
     "data": "Data from GitHub API · Unofficial"
   },
+  "badge": {
+    "verified": "Summary verified"
+  },
   "repo": {
     "back": "Back to chart",
     "statDelta": "Period gain",
     "statTotal": "Total stars",
     "statCommits": "30d commits",
-    "statPush": "Last push"
+    "statPush": "Last push",
+    "verifiedNote": "One-line summary generated from README — flagged if marketing-only",
+    "whyHot": {
+      "title": "Why hot now",
+      "stars": "Star velocity +{delta} in selected period (UTC)",
+      "early": "Early Signal — high relative growth under 5k stars"
+    },
+    "trust": {
+      "title": "Adopt with confidence",
+      "license": "License",
+      "licenseVal": "{license} — permissive for most products",
+      "licenseUnknown": "License not detected",
+      "security": "Security",
+      "securityVal": "No known critical CVE in default branch scan",
+      "securityLink": "Full report on OSS Insight",
+      "sustain": "Sustainability",
+      "sustainVal": "{commits} commits / 30d · last push {push}",
+      "busHealthy": "Bus factor: healthy (active maintenance)",
+      "busFair": "Bus factor: moderate — review contributor spread",
+      "busLow": "Bus factor: at risk — low recent activity"
+    },
+    "tag": {
+      "bestofjs": "On Best of JS"
+    },
+    "cta": {
+      "github": "Open on GitHub",
+      "chart": "Chart · star-history",
+      "insight": "Deep dive · OSS Insight",
+      "security": "Security · OSS Insight",
+      "bestofjs": "Best of JS",
+      "license": "License · Libraries.io"
+    },
+    "alt": {
+      "title": "Alternatives",
+      "intro": "Same topic — health-ranked peers. Open the matrix or jump to curves only.",
+      "openCompare": "Open compare",
+      "primary": "Primary"
+    },
+    "similar": {
+      "compare": "Chart only · star-history"
+    },
+    "readme": {
+      "title": "README preview",
+      "note": "… full README loaded via GitHub API in production",
+      "empty": "No description available yet."
+    }
   },
   "compare": {
     "title": "Compare alternatives",

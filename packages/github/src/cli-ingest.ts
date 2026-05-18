@@ -1,4 +1,14 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import dotenv from "dotenv";
 import { runIngest } from "./ingest";
+
+dotenv.config({
+  path: path.resolve(
+    path.dirname(fileURLToPath(import.meta.url)),
+    "../../../.env",
+  ),
+});
 
 const ranking = process.argv.includes("--ranking");
 

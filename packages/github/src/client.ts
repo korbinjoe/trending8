@@ -24,6 +24,12 @@ export class GitHubRateLimitError extends Error {
   }
 }
 
+const MAX_ATTEMPTS = 5;
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export class GitHubGraphQLClient {
   private readonly token: string;
 
@@ -36,6 +42,32 @@ export class GitHubGraphQLClient {
   }
 
   async query<T>(
+    query: string,
+    variables?: Record<string, unknown>,
+  ): Promise<{ data: T; rateLimit: RateLimitInfo | null }> {
+    let lastError: Error | null = null;
+
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      try {
+        return await this.queryOnce<T>(query, variables);
+      } catch (err) {
+        lastError = err instanceof Error ? err : new Error(String(err));
+        const retryable =
+          lastError.message.includes("HTTP 502") ||
+          lastError.message.includes("HTTP 503") ||
+          lastError.message.includes("HTTP 504");
+        if (!retryable || attempt >= MAX_ATTEMPTS) {
+          throw lastError;
+        }
+        const delayMs = Math.min(1000 * 2 ** attempt, 30_000);
+        await sleep(delayMs);
+      }
+    }
+
+    throw lastError ?? new Error("GitHub GraphQL request failed");
+  }
+
+  private async queryOnce<T>(
     query: string,
     variables?: Record<string, unknown>,
   ): Promise<{ data: T; rateLimit: RateLimitInfo | null }> {
@@ -58,7 +90,8 @@ export class GitHubGraphQLClient {
 
     if (!res.ok) {
       const text = await res.text();
-      throw new Error(`GitHub GraphQL HTTP ${res.status}: ${text}`);
+      const snippet = text.slice(0, 200);
+      throw new Error(`GitHub GraphQL HTTP ${res.status}: ${snippet}`);
     }
 
     const json = (await res.json()) as GraphQLResponse<T> & {

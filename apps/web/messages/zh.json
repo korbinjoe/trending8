@@ -9,18 +9,37 @@
   },
   "hero": {
     "title": "每天 3 分钟看懂 GitHub 上正在升温的项目",
-    "meta": "更新于 {date} UTC · 已过滤 Awesome/僵尸仓"
+    "meta": "更新于 {date} UTC · 已过滤 Awesome/僵尸仓 · <rules>排名规则</rules>",
+    "tzNote": "周期按 UTC 切日 · <glossary>信号说明</glossary>"
   },
   "filter": {
-    "language": "编程语言",
+    "language": "语言",
     "allLanguages": "全部语言",
-    "period": "时间范围",
+    "period": "周期",
     "today": "今日",
     "week": "本周",
     "month": "本月",
     "halfYear": "半年",
     "year": "一年",
-    "topicAll": "全部主题"
+    "topicAll": "全部主题",
+    "hideShells": "隐藏空壳仓"
+  },
+  "legend": {
+    "title": "卡片信号",
+    "trigger": "为何变热",
+    "license": "许可证",
+    "health": "可持续性",
+    "shell": "空壳仓"
+  },
+  "badge": {
+    "shell": "空壳风险"
+  },
+  "alt": {
+    "consider": "还可考虑",
+    "compare": "对比"
+  },
+  "feed": {
+    "loadMore": "加载更多"
   },
   "tab": {
     "velocity": "增速榜",
@@ -47,12 +66,60 @@
   "footer": {
     "data": "数据来自 GitHub API · 非官方"
   },
+  "badge": {
+    "verified": "摘要已校验"
+  },
   "repo": {
     "back": "返回榜单",
     "statDelta": "周期增量",
     "statTotal": "总 Star",
     "statCommits": "30 天提交",
-    "statPush": "最近推送"
+    "statPush": "最近推送",
+    "verifiedNote": "一句话摘要来自 README — 纯营销文案会被标记",
+    "whyHot": {
+      "title": "为何此刻变热",
+      "stars": "所选周期（UTC）Star 增速 +{delta}",
+      "early": "早期信号 — 总 Star < 5k 且相对增速靠前"
+    },
+    "trust": {
+      "title": "放心采纳",
+      "license": "许可证",
+      "licenseVal": "{license} — 多数产品可友好使用",
+      "licenseUnknown": "未检测到许可证",
+      "security": "安全",
+      "securityVal": "默认分支扫描未发现已知严重 CVE",
+      "securityLink": "在 OSS Insight 查看完整报告",
+      "sustain": "可持续性",
+      "sustainVal": "30 天 {commits} 次提交 · 最近推送 {push}",
+      "busHealthy": "巴士因子：健康（维护活跃）",
+      "busFair": "巴士因子：一般 — 建议关注贡献者分布",
+      "busLow": "巴士因子：风险 — 近期活跃度偏低"
+    },
+    "tag": {
+      "bestofjs": "Best of JS 收录"
+    },
+    "cta": {
+      "github": "在 GitHub 打开",
+      "chart": "曲线 · star-history",
+      "insight": "深潜 · OSS Insight",
+      "security": "安全 · OSS Insight",
+      "bestofjs": "Best of JS",
+      "license": "许可证 · Libraries.io"
+    },
+    "alt": {
+      "title": "替代品",
+      "intro": "同主题、按健康度排序的同类项目。可打开对比矩阵或仅看曲线。",
+      "openCompare": "打开对比",
+      "primary": "当前仓库"
+    },
+    "similar": {
+      "compare": "仅曲线 · star-history"
+    },
+    "readme": {
+      "title": "README 预览",
+      "note": "… 生产环境将通过 GitHub API 加载完整 README",
+      "empty": "暂无项目描述。"
+    }
   },
   "compare": {
     "title": "对比替代品",
