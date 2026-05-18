@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0c0e12;
+  --color-surface: #151921;
+  --color-surface-hover: #1a2030;
+  --color-border: #2a3142;
+  --color-text: #e8eaed;
+  --color-muted: #8b95a8;
+  --color-accent: #3dd68c;
+  --color-accent-dim: #2a9d63;
+  --color-warn: #f0b429;
+  --color-danger: #f07178;
+  --font-sans: "DM Sans", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius-card: 10px;
+  --max-w-content: 960px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(61, 214, 140, 0.07), transparent),
+    radial-gradient(ellipse 50% 40% at 100% 80%, rgba(240, 180, 41, 0.03), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--max-w-content);
+  margin: 0 auto;
+  padding: 0 1.25rem 3rem;
+}
+
+/* Header — aligned with prototypes/shared.css */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4rem;
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
+  padding: 0.75rem 0;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  color: var(--color-text);
+  flex-shrink: 0;
+}
+
+.logo-mark {
+  width: 1.75rem;
+  height: 1.75rem;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-dim));
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  font-size: 0.875rem;
+  line-height: 1;
+  color: var(--color-bg);
+}
+
+.header-end {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.site-nav a {
+  color: var(--color-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+
+.site-nav a:hover {
+  color: var(--color-text);
+}
+
+.site-nav a.is-active {
+  color: var(--color-accent);
+}
+
+.lang-select {
+  appearance: none;
+  background: var(--color-surface)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b95a8'%3E%3Cpath d='M3 5l3 3 3-3'/%3E%3C/svg%3E")
+    no-repeat right 0.6rem center;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 0.45rem 1.75rem 0.45rem 0.65rem;
+  min-width: 7.5rem;
+  max-width: 9.5rem;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+[dir="rtl"] .lang-select {
+  background-position: left 0.6rem center;
+  padding: 0.45rem 0.65rem 0.45rem 1.75rem;
+}
+
+[dir="rtl"] .site-header {
+  flex-direction: row-reverse;
+}

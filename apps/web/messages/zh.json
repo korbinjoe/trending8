@@ -1,0 +1,73 @@
+{
+  "ui": {
+    "localeLabel": "界面语言"
+  },
+  "nav": {
+    "trending": "趋势",
+    "subscribe": "订阅",
+    "about": "关于"
+  },
+  "hero": {
+    "title": "每天 3 分钟看懂 GitHub 上正在升温的项目",
+    "meta": "更新于 {date} UTC · 已过滤 Awesome/僵尸仓"
+  },
+  "filter": {
+    "language": "编程语言",
+    "allLanguages": "全部语言",
+    "period": "时间范围",
+    "today": "今日",
+    "week": "本周",
+    "month": "本月",
+    "halfYear": "半年",
+    "year": "一年",
+    "topicAll": "全部主题"
+  },
+  "tab": {
+    "velocity": "增速榜",
+    "early": "早期信号",
+    "hintVelocity": "按所选周期绝对 Star 增量排序",
+    "hintEarly": "相对增速 Top · 总 Star < 5k"
+  },
+  "health": {
+    "active": "活跃",
+    "fair": "一般",
+    "low": "低活跃"
+  },
+  "cta": {
+    "chart": "曲线",
+    "compare": "对比",
+    "openCharts": "打开曲线",
+    "analyze": "OSS Insight 分析"
+  },
+  "chartModal": {
+    "close": "关闭",
+    "note": "由 star-history.com 提供",
+    "openExternal": "在 star-history 打开 ↗"
+  },
+  "footer": {
+    "data": "数据来自 GitHub API · 非官方"
+  },
+  "repo": {
+    "back": "返回榜单",
+    "statDelta": "周期增量",
+    "statTotal": "总 Star",
+    "statCommits": "30 天提交",
+    "statPush": "最近推送"
+  },
+  "compare": {
+    "title": "对比替代品",
+    "sortHealth": "健康度",
+    "sortVelocity": "增速"
+  },
+  "subscribe": {
+    "title": "订阅",
+    "description": "增速榜 RSS 订阅源"
+  },
+  "about": {
+    "title": "关于",
+    "disclaimer": "本站非 GitHub 官方，数据仅供参考。"
+  },
+  "empty": {
+    "feed": "暂无榜单数据，请先运行 ingest。"
+  }
+}
