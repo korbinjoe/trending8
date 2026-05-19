@@ -13,7 +13,16 @@ const ingestLogger = {
   },
 };
 
+/** Vercel Cron invokes GET; manual triggers may use POST. */
+export async function GET(request: Request) {
+  return handleIngest(request);
+}
+
 export async function POST(request: Request) {
+  return handleIngest(request);
+}
+
+async function handleIngest(request: Request) {
   if (!validateCronSecret(request)) {
     return errorResponse("Unauthorized", 401);
   }
