@@ -40,9 +40,8 @@ Open http://localhost:3000
 1. Create a [Neon](https://neon.tech) or Supabase free Postgres database.
 2. Import the repo in Vercel; set root directory to repo root (monorepo).
 3. Add environment variables from the table above.
-4. `vercel.json` configures cron:
-   - Every 6 hours: ingest snapshots
-   - Daily 08:00 UTC: ingest + ranking batch (`?ranking=true`)
+4. `vercel.json` configures a daily cron (Vercel Hobby allows at most once per day):
+   - 08:00 UTC: ingest + ranking batch (`?ranking=true`)
 5. After first deploy, trigger ingest manually:
 
 ```bash

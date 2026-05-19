@@ -119,8 +119,9 @@ pnpm db:push
 
 | 调度 | 路径 | 作用 |
 |------|------|------|
-| `0 */6 * * *` | `/api/cron/ingest` | 每 6 小时摄取仓库快照 |
-| `0 8 * * *` | `/api/cron/ingest?ranking=true` | 每日 08:00 UTC 生成正式榜单并刷新 RSS |
+| `0 8 * * *` | `/api/cron/ingest?ranking=true` | 每日 08:00 UTC 摄取快照、生成正式榜单并刷新 RSS |
+
+> **Vercel Hobby**：每个 cron 表达式每天最多执行一次；`*/6` 等高频调度需 Pro。快照与榜单合并为上述每日任务；若需额外摄取，可手动 `curl` 或本地 `pnpm ingest:once`。
 
 **鉴权**：Vercel 在调用 Cron 时会自动在请求头附带 `Authorization: Bearer <CRON_SECRET>`（需已在环境变量中设置 `CRON_SECRET`）。
 
