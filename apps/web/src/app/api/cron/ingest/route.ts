@@ -40,10 +40,7 @@ async function handleIngest(request: Request) {
 
   try {
     const result = await runIngest({ ranking, logger: ingestLogger });
-    for (const id of result.rankingRunIds) {
-      revalidateTag(`ranking-run-${id}`);
-    }
-    revalidateTag("ranking-run-latest");
+    revalidateTag("feed");
 
     ingestLogger.info("cron_ingest_complete", {
       durationMs: Date.now() - started,

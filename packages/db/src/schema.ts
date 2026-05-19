@@ -122,6 +122,7 @@ export const periodMetrics = pgTable(
       t.language,
       t.velocityRank,
     ),
+    index("period_metrics_ranking_run_idx").on(t.rankingRunId, t.velocityRank),
     index("period_metrics_repo_period_idx").on(t.repoId, t.period),
   ],
 );

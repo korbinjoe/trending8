@@ -4,7 +4,7 @@ import {
   type FeedItem,
   type FeedResponse,
 } from "@github-trending/core/types";
-import { getAlternativesForRepo } from "@github-trending/github";
+import { getAlternativesForRepos } from "@github-trending/github";
 import { getDb } from "@github-trending/db";
 import {
   periodMetrics,
@@ -58,40 +58,46 @@ export async function getFeed(params: {
     conditions.push(eq(periodMetrics.language, params.lang));
   }
 
-  const metrics = await db
-    .select()
+  const rows = await db
+    .select({
+      metric: periodMetrics,
+      repo: repositories,
+    })
     .from(periodMetrics)
+    .innerJoin(repositories, eq(periodMetrics.repoId, repositories.id))
     .where(and(...conditions))
     .orderBy(asc(periodMetrics.velocityRank))
     .offset(offset)
     .limit(PAGE_SIZE + 1);
 
-  const hasMore = metrics.length > PAGE_SIZE;
-  const page = hasMore ? metrics.slice(0, PAGE_SIZE) : metrics;
+  const hasMore = rows.length > PAGE_SIZE;
+  const page = hasMore ? rows.slice(0, PAGE_SIZE) : rows;
 
-  const items: FeedItem[] = [];
+  const topicFilter = params.topic?.toLowerCase();
+  const filtered = topicFilter
+    ? page.filter(({ repo }) => {
+        const topics = (repo.topics as string[]) ?? [];
+        return topics.some((t) => t.toLowerCase() === topicFilter);
+      })
+    : page;
 
-  for (const m of page) {
-    const repoRows = await db
-      .select()
-      .from(repositories)
-      .where(eq(repositories.id, m.repoId))
-      .limit(1);
-    const repo = repoRows[0];
-    if (!repo) continue;
+  const repoIds = filtered.map(({ repo }) => repo.id);
+  const alternativesByRepo = await getAlternativesForRepos(
+    db,
+    repoIds,
+    period,
+    2,
+  );
 
+  const items: FeedItem[] = filtered.map(({ metric: m, repo }) => {
     const topics = (repo.topics as string[]) ?? [];
-    if (params.topic && !topics.some((t) => t.toLowerCase() === params.topic?.toLowerCase())) {
-      continue;
-    }
-
-    const alternatives = await getAlternativesForRepo(db, repo.id, period, 2);
+    const alternatives = alternativesByRepo.get(repo.id) ?? [];
     const slugs = [
       `${repo.owner}/${repo.name}`,
       ...alternatives.map((a) => a.slug),
     ].slice(0, 4);
 
-    items.push({
+    return {
       rank: m.velocityRank ?? 0,
       owner: repo.owner,
       name: repo.name,
@@ -104,8 +110,8 @@ export async function getFeed(params: {
       isEarlySignal: m.isEarlySignal === 1,
       alternatives,
       compareUrl: slugs.length > 1 ? compareUrl(slugs) : undefined,
-    });
-  }
+    };
+  });
 
   return {
     items,

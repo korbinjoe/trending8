@@ -6,5 +6,7 @@ export { runRankingBatch, getLatestRankingRunId } from "./ranking-batch";
 export {
   computeAlternativesForPeriod,
   getAlternativesForRepo,
+  getAlternativesForRepos,
 } from "./alternatives";
+export type { AlternativeItem } from "./alternatives";
 export * from "./config";

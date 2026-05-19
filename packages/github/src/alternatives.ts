@@ -6,7 +6,7 @@ import {
   periodMetrics,
   repositories,
 } from "@github-trending/db";
-import { and, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, lte } from "drizzle-orm";
 
 const MIN_HEALTH_SCORE = 2;
 
@@ -106,36 +106,53 @@ export async function computeAlternativesForPeriod(
   return edgesWritten;
 }
 
-export async function getAlternativesForRepo(
+export type AlternativeItem = {
+  owner: string;
+  name: string;
+  slug: string;
+  why: string;
+};
+
+export async function getAlternativesForRepos(
   db: Database,
-  anchorRepoId: string,
+  anchorRepoIds: string[],
   period: FeedPeriod,
   limit = 2,
-): Promise<Array<{ owner: string; name: string; slug: string; why: string }>> {
+): Promise<Map<string, AlternativeItem[]>> {
+  const result = new Map<string, AlternativeItem[]>();
+  if (anchorRepoIds.length === 0) return result;
+
+  for (const id of anchorRepoIds) {
+    result.set(id, []);
+  }
+
   const edges = await db
     .select()
     .from(alternativesEdges)
     .where(
       and(
-        eq(alternativesEdges.anchorRepoId, anchorRepoId),
+        inArray(alternativesEdges.anchorRepoId, anchorRepoIds),
         eq(alternativesEdges.period, period),
+        lte(alternativesEdges.rank, limit),
       ),
     )
-    .orderBy(alternativesEdges.rank)
-    .limit(limit);
+    .orderBy(asc(alternativesEdges.anchorRepoId), asc(alternativesEdges.rank));
 
-  const results: Array<{ owner: string; name: string; slug: string; why: string }> =
-    [];
+  const candidateIds = [...new Set(edges.map((e) => e.candidateRepoId))];
+  if (candidateIds.length === 0) return result;
+
+  const repoRows = await db
+    .select()
+    .from(repositories)
+    .where(inArray(repositories.id, candidateIds));
+  const repoMap = new Map(repoRows.map((r) => [r.id, r]));
 
   for (const edge of edges) {
-    const rows = await db
-      .select()
-      .from(repositories)
-      .where(eq(repositories.id, edge.candidateRepoId))
-      .limit(1);
-    const repo = rows[0];
+    const repo = repoMap.get(edge.candidateRepoId);
     if (!repo) continue;
-    results.push({
+    const list = result.get(edge.anchorRepoId);
+    if (!list || list.length >= limit) continue;
+    list.push({
       owner: repo.owner,
       name: repo.name,
       slug: `${repo.owner}/${repo.name}`,
@@ -143,5 +160,15 @@ export async function getAlternativesForRepo(
     });
   }
 
-  return results;
+  return result;
+}
+
+export async function getAlternativesForRepo(
+  db: Database,
+  anchorRepoId: string,
+  period: FeedPeriod,
+  limit = 2,
+): Promise<AlternativeItem[]> {
+  const map = await getAlternativesForRepos(db, [anchorRepoId], period, limit);
+  return map.get(anchorRepoId) ?? [];
 }
