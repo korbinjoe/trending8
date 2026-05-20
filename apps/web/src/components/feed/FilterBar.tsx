@@ -1,5 +1,6 @@
 "use client";
 
+import { useFeedLoading } from "@/components/feed/FeedLoadingContext";
 import { useTranslations } from "next-intl";
 import { TopicFilterChips } from "@/components/feed/TopicFilterChips";
 import {
@@ -30,6 +31,7 @@ export function FilterBar({ topicFilters }: FilterBarProps) {
   const tabT = useTranslations("tab");
   const legendT = useTranslations("legend");
   const badgeT = useTranslations("badge");
+  const { isLoading: feedLoading } = useFeedLoading();
 
   const [view, setView] = useQueryState("view", feedViewParser);
   const [period, setPeriod] = useQueryState("period", feedPeriodParser);
@@ -41,7 +43,7 @@ export function FilterBar({ topicFilters }: FilterBarProps) {
 
   return (
     <>
-      <section className="filters">
+      <section className={`filters${feedLoading ? " filters--loading" : ""}`}>
         <div className="filters-row">
           <label className="visually-hidden" htmlFor="lang-select">
             {t("language")}
@@ -86,7 +88,11 @@ export function FilterBar({ topicFilters }: FilterBarProps) {
         <TopicFilterChips topicFilters={topicFilters} />
       </section>
 
-      <div className="tabs" role="tablist">
+      <div
+        className={`tabs${feedLoading ? " tabs--loading" : ""}`}
+        role="tablist"
+        aria-busy={feedLoading}
+      >
         {VIEWS.map((v) => (
           <button
             key={v}
@@ -94,6 +100,7 @@ export function FilterBar({ topicFilters }: FilterBarProps) {
             role="tab"
             aria-selected={view === v}
             className={view === v ? "is-active" : ""}
+            disabled={feedLoading}
             onClick={() => setView(v)}
           >
             {v === "velocity" ? tabT("velocity") : tabT("early")}

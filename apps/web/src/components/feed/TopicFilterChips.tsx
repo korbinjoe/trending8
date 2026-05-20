@@ -1,5 +1,6 @@
 "use client";
 
+import { useFeedLoading } from "@/components/feed/FeedLoadingContext";
 import { useTranslations } from "next-intl";
 import { feedTopicParser } from "@/lib/feed-query-nuqs";
 import { useQueryState } from "nuqs";
@@ -11,6 +12,7 @@ interface TopicFilterChipsProps {
 
 export function TopicFilterChips({ topicFilters }: TopicFilterChipsProps) {
   const t = useTranslations("filter");
+  const { isLoading: feedLoading } = useFeedLoading();
   const [topic, setTopic] = useQueryState("topic", feedTopicParser);
 
   const chips = useMemo(() => {
@@ -29,10 +31,16 @@ export function TopicFilterChips({ topicFilters }: TopicFilterChipsProps) {
   }, [topicFilters, topic]);
 
   return (
-    <section className="topics" role="group" aria-label={t("topicsGroup")}>
+    <section
+      className={`topics${feedLoading ? " topics--loading" : ""}`}
+      role="group"
+      aria-label={t("topicsGroup")}
+      aria-busy={feedLoading}
+    >
       <button
         type="button"
         className={`chip ${topic === "" ? "is-on" : ""}`}
+        disabled={feedLoading}
         onClick={() => setTopic(null)}
       >
         {t("topicAll")}
@@ -42,6 +50,7 @@ export function TopicFilterChips({ topicFilters }: TopicFilterChipsProps) {
           key={chip}
           type="button"
           className={`chip ${topic === chip ? "is-on" : ""}`}
+          disabled={feedLoading}
           onClick={() => setTopic(chip)}
         >
           {chip}

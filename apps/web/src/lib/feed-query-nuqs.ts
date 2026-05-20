@@ -4,12 +4,12 @@ import {
   parseAsStringEnum,
 } from "nuqs";
 
-/** Home feed filters must hit the server (RSC), not client-only URL updates. */
-const serverQuery = { shallow: false } as const;
+/** Shallow URL updates; feed data loads via `/api/feed` in `FeedListClient`. */
+const clientQuery = { shallow: true } as const;
 
 export const feedViewParser = parseAsStringEnum(["velocity", "early"] as const)
   .withDefault("velocity")
-  .withOptions(serverQuery);
+  .withOptions(clientQuery);
 
 export const feedPeriodParser = parseAsStringEnum([
   "today",
@@ -19,16 +19,16 @@ export const feedPeriodParser = parseAsStringEnum([
   "year",
 ] as const)
   .withDefault("today")
-  .withOptions(serverQuery);
+  .withOptions(clientQuery);
 
 export const feedLangParser = parseAsString
   .withDefault("")
-  .withOptions(serverQuery);
+  .withOptions(clientQuery);
 
 export const feedTopicParser = parseAsString
   .withDefault("")
-  .withOptions(serverQuery);
+  .withOptions(clientQuery);
 
 export const feedHideShellsParser = parseAsBoolean
   .withDefault(true)
-  .withOptions(serverQuery);
+  .withOptions(clientQuery);

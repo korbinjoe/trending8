@@ -3,6 +3,7 @@ import { periodMetrics, repositories } from "@github-trending/db";
 import { asc, eq } from "drizzle-orm";
 import { getCachedLatestCompletedRun } from "./ranking-run-cache";
 import { getSiteUrl, repoUrl } from "./site";
+import { toIsoString } from "./timestamp";
 
 function escapeXml(s: string): string {
   return s
@@ -30,7 +31,10 @@ export async function buildRssFeed(options?: {
 </channel></rss>`;
   }
   const run = await getCachedLatestCompletedRun("today", "velocity");
-  const pubDate = run?.completedAt?.toUTCString() ?? new Date().toUTCString();
+  const pubIso = toIsoString(run?.completedAt);
+  const pubDate = pubIso
+    ? new Date(pubIso).toUTCString()
+    : new Date().toUTCString();
 
   if (!run) {
     return `<?xml version="1.0" encoding="UTF-8"?>

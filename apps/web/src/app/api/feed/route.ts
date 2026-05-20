@@ -1,6 +1,6 @@
 import { errorResponse, jsonResponse, withRateLimit } from "@/lib/api-utils";
-import { getFeed } from "@/lib/feed-service";
-import { unstable_cache } from "next/cache";
+import { getCachedFeed } from "@/lib/cached-feed";
+import { parseFeedParams } from "@/lib/feed-params";
 
 export const revalidate = 300;
 
@@ -9,22 +9,12 @@ export async function GET(request: Request) {
   if (limited) return limited;
 
   const { searchParams } = new URL(request.url);
-  const view = searchParams.get("view") ?? "velocity";
-  const period = searchParams.get("period") ?? "today";
-  const lang = searchParams.get("lang") ?? undefined;
-  const topic = searchParams.get("topic") ?? undefined;
-  const cursor = searchParams.get("cursor") ?? undefined;
-  const includeNoise = searchParams.get("includeNoise") === "true";
-
-  const cachedGetFeed = unstable_cache(
-    async () =>
-      getFeed({ view, period, lang, topic, cursor, includeNoise }),
-    ["feed", view, period, lang ?? "", topic ?? "", cursor ?? "", String(includeNoise)],
-    { revalidate: 300, tags: ["feed"] },
+  const parsed = parseFeedParams(
+    Object.fromEntries(searchParams.entries()),
   );
 
   try {
-    const data = await cachedGetFeed();
+    const data = await getCachedFeed(parsed);
     const tag = data.rankingRunId ?? "none";
     return jsonResponse(data, {
       headers: {

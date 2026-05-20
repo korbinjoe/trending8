@@ -75,7 +75,9 @@
   "feed": {
     "loadMore": "Load more",
     "loading": "Loading rankings",
-    "loadingMore": "Loading…"
+    "loadingMore": "Loading…",
+    "switching": "Updating rankings…",
+    "error": "Could not load rankings. Try again."
   },
   "tab": {
     "velocity": "Velocity",

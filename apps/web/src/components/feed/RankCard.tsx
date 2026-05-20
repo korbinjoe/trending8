@@ -2,7 +2,7 @@
 
 import { ChartModal } from "@/components/chart/ChartModal";
 import { FavoriteButton } from "@/components/favorites/FavoriteButton";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import type { FeedItem } from "@github-trending/core/types";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -60,7 +60,10 @@ function GithubIcon() {
 export function RankCard({ item, highlightQuery }: RankCardProps) {
   const t = useTranslations();
   const tabT = useTranslations("tab");
+  const router = useRouter();
   const [chartOpen, setChartOpen] = useState(false);
+  const repoHref = `/repo/${item.owner}/${item.name}`;
+  const prefetchRepo = () => router.prefetch(repoHref);
   const healthLabel = t(`health.${item.health}`);
   const hasAltStrip = item.alternatives.length > 0;
   const isTopRank = item.rank <= 3;
@@ -72,9 +75,11 @@ export function RankCard({ item, highlightQuery }: RankCardProps) {
   return (
     <li className={`rank-item${hasAltStrip ? " rank-item--alt" : ""}`}>
       <Link
-        href={`/repo/${item.owner}/${item.name}`}
+        href={repoHref}
         prefetch
         className="rank-card"
+        onMouseEnter={prefetchRepo}
+        onFocus={prefetchRepo}
       >
         <div className="rank-card__layout">
           <div className="rank-card__content">

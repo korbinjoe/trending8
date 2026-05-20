@@ -1,7 +1,7 @@
 import type { FeedPeriod, FeedView } from "@github-trending/core/types";
 import { getDb } from "@github-trending/db";
-import { periodMetrics, rankingRuns } from "@github-trending/db";
-import { and, desc, eq, exists } from "drizzle-orm";
+import { rankingRuns } from "@github-trending/db";
+import { and, desc, eq } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 
 export type RankingRunRow = typeof rankingRuns.$inferSelect;
@@ -19,12 +19,6 @@ async function fetchLatestCompletedRun(
         eq(rankingRuns.period, period),
         eq(rankingRuns.view, view),
         eq(rankingRuns.status, "completed"),
-        exists(
-          db
-            .select({ id: periodMetrics.id })
-            .from(periodMetrics)
-            .where(eq(periodMetrics.rankingRunId, rankingRuns.id)),
-        ),
       ),
     )
     .orderBy(desc(rankingRuns.completedAt))

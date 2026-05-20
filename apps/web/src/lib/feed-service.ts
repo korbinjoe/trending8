@@ -11,6 +11,7 @@ import { periodMetrics, repositories } from "@github-trending/db";
 import { and, asc, eq, sql } from "drizzle-orm";
 import { getCachedLatestCompletedRun } from "./ranking-run-cache";
 import { compareUrl } from "./site";
+import { toIsoString } from "./timestamp";
 
 const PAGE_SIZE = 24;
 
@@ -21,8 +22,6 @@ export async function getFeed(params: {
   topic?: string;
   cursor?: string;
   includeNoise?: boolean;
-  /** When true with cursor, returns items from rank 1 through current page (SSR load-more). */
-  accumulate?: boolean;
 }): Promise<FeedResponse> {
   const view = FeedViewSchema.parse(params.view);
   const period = FeedPeriodSchema.parse(params.period);
@@ -33,12 +32,8 @@ export async function getFeed(params: {
     return { items: [], nextCursor: null, rankingRunId: null, updatedAt: null };
   }
 
-  const pageOffset = params.cursor ? Number.parseInt(params.cursor, 10) : 0;
-  const offset = params.accumulate && params.cursor ? 0 : pageOffset;
-  const fetchLimit =
-    params.accumulate && params.cursor
-      ? pageOffset + PAGE_SIZE + 1
-      : PAGE_SIZE + 1;
+  const offset = params.cursor ? Number.parseInt(params.cursor, 10) : 0;
+  const fetchLimit = PAGE_SIZE + 1;
 
   const conditions = [
     eq(periodMetrics.rankingRunId, run.id),
@@ -72,18 +67,14 @@ export async function getFeed(params: {
     .offset(offset)
     .limit(fetchLimit);
 
-  const pageSize = params.accumulate && params.cursor ? fetchLimit - 1 : PAGE_SIZE;
-  const hasMore = rows.length > pageSize;
-  const page = hasMore ? rows.slice(0, pageSize) : rows;
+  const hasMore = rows.length > PAGE_SIZE;
+  const page = hasMore ? rows.slice(0, PAGE_SIZE) : rows;
 
   const repoIds = page.map(({ repo }) => repo.id);
-  const phByRepo = await getPhSignalsForRepoIds(db, repoIds);
-  const alternativesByRepo = await getAlternativesForRepos(
-    db,
-    repoIds,
-    period,
-    2,
-  );
+  const [phByRepo, alternativesByRepo] = await Promise.all([
+    getPhSignalsForRepoIds(db, repoIds),
+    getAlternativesForRepos(db, repoIds, period, 2),
+  ]);
 
   const items: FeedItem[] = page.map(({ metric: m, repo }) => {
     const topics = (repo.topics as string[]) ?? [];
@@ -110,12 +101,12 @@ export async function getFeed(params: {
     };
   });
 
-  const nextOffset = params.accumulate && params.cursor ? pageOffset + PAGE_SIZE : offset + PAGE_SIZE;
+  const nextOffset = offset + PAGE_SIZE;
 
   return {
     items,
     nextCursor: hasMore ? String(nextOffset) : null,
     rankingRunId: run.id,
-    updatedAt: run.completedAt?.toISOString() ?? null,
+    updatedAt: toIsoString(run.completedAt),
   };
 }

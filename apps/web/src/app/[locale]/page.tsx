@@ -1,10 +1,12 @@
-import { FeedListServer } from "@/components/feed/FeedListServer";
+import { FeedListSkeleton } from "@/components/feed/FeedListSkeleton";
+import { FeedLoadingProvider } from "@/components/feed/FeedLoadingContext";
 import { FilterBar } from "@/components/feed/FilterBar";
-import { Hero } from "@/components/layout/Hero";
-import { getCachedFeed } from "@/lib/cached-feed";
+import { HomeFeedBlock } from "@/components/home/HomeFeedBlock";
+import { HomeHero } from "@/components/home/HomeHero";
+import { HomeHeroFallback } from "@/components/home/HomeHeroFallback";
 import { parseFeedParams } from "@/lib/feed-params";
 import { getCachedSnapshotTopicFilters } from "@/lib/topic-cache";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 
 export const revalidate = 300;
@@ -21,23 +23,26 @@ export default async function HomePage({
   setRequestLocale(locale);
 
   const feedParams = parseFeedParams(sp);
-  const [topicFilters, feed] = await Promise.all([
+  const [topicFilters, feedT] = await Promise.all([
     getCachedSnapshotTopicFilters().catch(() => [] as string[]),
-    getCachedFeed(feedParams).catch(() => ({
-      items: [],
-      nextCursor: null,
-      rankingRunId: null,
-      updatedAt: null,
-    })),
+    getTranslations("feed"),
   ]);
 
   return (
-    <>
-      <Hero updatedAt={feed.updatedAt} />
-      <Suspense fallback={null}>
-        <FilterBar topicFilters={topicFilters} />
+    <FeedLoadingProvider>
+      <Suspense fallback={<HomeHeroFallback />}>
+        <HomeHero feedParams={feedParams} />
       </Suspense>
-      <FeedListServer feed={feed} params={feedParams} />
-    </>
+      <FilterBar topicFilters={topicFilters} />
+      <Suspense
+        fallback={
+          <section className="feed-section">
+            <FeedListSkeleton label={feedT("loading")} />
+          </section>
+        }
+      >
+        <HomeFeedBlock feedParams={feedParams} />
+      </Suspense>
+    </FeedLoadingProvider>
   );
 }

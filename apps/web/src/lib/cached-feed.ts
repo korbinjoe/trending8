@@ -15,11 +15,10 @@ function feedCacheKey(params: ParsedFeedParams): string[] {
   ];
 }
 
-/** Cached feed for home SSR (filters + optional accumulated load-more). */
+/** Cached first page / API feed (no SSR accumulate). */
 export function getCachedFeed(
   params: ParsedFeedParams,
 ): Promise<FeedResponse> {
-  const accumulate = Boolean(params.cursor);
   return unstable_cache(
     () =>
       getFeed({
@@ -29,7 +28,6 @@ export function getCachedFeed(
         topic: params.topic,
         cursor: params.cursor,
         includeNoise: params.includeNoise,
-        accumulate,
       }),
     feedCacheKey(params),
     { revalidate: 300, tags: ["feed"] },

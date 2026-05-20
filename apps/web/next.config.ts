@@ -22,6 +22,10 @@ const nextConfig: NextConfig = {
       "next-intl",
       "@github-trending/core",
     ],
+    staleTimes: {
+      dynamic: 30,
+      static: 180,
+    },
   },
 };
 

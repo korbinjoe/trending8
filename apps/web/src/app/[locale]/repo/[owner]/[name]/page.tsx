@@ -1,9 +1,8 @@
 import { RepoAlternativesSection } from "@/components/repo/RepoAlternativesSection";
-import { RepoDetailView } from "@/components/repo/RepoDetailView";
-import { getCachedRepoDetailCore } from "@/lib/cached-repo-detail";
+import { RepoDetailMain } from "@/components/repo/RepoDetailMain";
 import { setRequestLocale } from "next-intl/server";
-import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import RepoDetailLoading from "./loading";
 
 export const revalidate = 600;
 
@@ -28,28 +27,21 @@ export default async function RepoPage({
   const { period } = await searchParams;
   setRequestLocale(locale);
 
-  const detail = await getCachedRepoDetailCore(owner, name, period);
-  if (!detail) notFound();
-
-  const primary = {
-    owner: detail.owner,
-    name: detail.name,
-    slug: detail.slug,
-    description: detail.description,
-    deltaStars: detail.deltaStars,
-    health: detail.health,
-    license: detail.license,
-  };
-
   return (
     <>
-      <RepoDetailView detail={detail} locale={locale} />
+      <Suspense fallback={<RepoDetailLoading />}>
+        <RepoDetailMain
+          owner={owner}
+          name={name}
+          period={period}
+          locale={locale}
+        />
+      </Suspense>
       <Suspense fallback={<RepoAltSkeleton />}>
         <RepoAlternativesSection
           owner={owner}
           name={name}
           period={period}
-          primary={primary}
         />
       </Suspense>
     </>

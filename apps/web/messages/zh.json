@@ -75,7 +75,9 @@
   "feed": {
     "loadMore": "加载更多",
     "loading": "正在加载榜单",
-    "loadingMore": "加载中…"
+    "loadingMore": "加载中…",
+    "switching": "正在切换榜单…",
+    "error": "榜单加载失败，请重试。"
   },
   "tab": {
     "velocity": "增速榜",
