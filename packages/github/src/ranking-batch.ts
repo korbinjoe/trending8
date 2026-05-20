@@ -7,7 +7,7 @@ import {
 import type { FeedPeriod, FeedView } from "@github-trending/core/types";
 import type { Database } from "@github-trending/db";
 import { periodMetrics, rankingRuns } from "@github-trending/db";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, exists } from "drizzle-orm";
 import { logEvery, type IngestLogger } from "./ingest-logger";
 import { type RankingMetricInput } from "./ranking-inputs";
 
@@ -145,11 +145,37 @@ export async function runRankingBatch(
       }
     }
 
+    const reposRanked = rows.length;
+
+    if (reposRanked === 0) {
+      logger?.warn("ranking_empty", {
+        period,
+        view,
+        rankingRunId: run.id,
+        candidates: inputs.length,
+        hint: "No period_metrics written; run marked failed",
+      });
+      await db
+        .update(rankingRuns)
+        .set({
+          status: "failed",
+          completedAt: new Date(),
+          reposProcessed: 0,
+          errorCount: 1,
+        })
+        .where(eq(rankingRuns.id, run.id));
+      return {
+        rankingRunId: run.id,
+        reposRanked: 0,
+        errorCount: 1,
+      };
+    }
+
     logger?.info("ranking_complete", {
       period,
       view,
       rankingRunId: run.id,
-      reposRanked: sorted.length,
+      reposRanked,
       earlyCandidates,
     });
 
@@ -158,13 +184,13 @@ export async function runRankingBatch(
       .set({
         status: "completed",
         completedAt: new Date(),
-        reposProcessed: sorted.length,
+        reposProcessed: reposRanked,
       })
       .where(eq(rankingRuns.id, run.id));
 
     return {
       rankingRunId: run.id,
-      reposRanked: sorted.length,
+      reposRanked,
       errorCount: 0,
     };
   } catch (err) {
@@ -182,7 +208,17 @@ export async function getLatestRankingRunId(
   const rows = await db
     .select({ id: rankingRuns.id })
     .from(rankingRuns)
-    .where(eq(rankingRuns.status, "completed"))
+    .where(
+      and(
+        eq(rankingRuns.status, "completed"),
+        exists(
+          db
+            .select({ id: periodMetrics.id })
+            .from(periodMetrics)
+            .where(eq(periodMetrics.rankingRunId, rankingRuns.id)),
+        ),
+      ),
+    )
     .orderBy(desc(rankingRuns.completedAt))
     .limit(1);
   return rows[0]?.id ?? null;
