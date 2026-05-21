@@ -51,5 +51,5 @@ git push origin v0.1.0
 ## Post-launch (24h)
 
 - [ ] Run ingest cron; watch for GitHub `rate_limit` logs
-- [ ] Execute [OSS_PROMOTION.md](./OSS_PROMOTION.md) Phase 0 items
+- [ ] Optional launch posts (Show HN, Reddit, DEV) per your own playbook
 - [ ] Monitor Security tab for Dependabot / secret alerts

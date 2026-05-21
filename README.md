@@ -57,7 +57,6 @@ Architecture: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
 | [docs/SELF_HOSTING.md](./docs/SELF_HOSTING.md) | Local / VPS self-host |
 | [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) | Vercel + Neon production |
 | [docs/SECRET_AUDIT.md](./docs/SECRET_AUDIT.md) | Pre-release secret scan log |
-| [docs/OSS_PROMOTION.md](./docs/OSS_PROMOTION.md) | Launch & growth checklist |
 | [docs/RELEASE_CHECKLIST.md](./docs/RELEASE_CHECKLIST.md) | Maintainer steps before/after going public |
 
 ## Environment variables
