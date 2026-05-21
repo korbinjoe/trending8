@@ -1,6 +1,8 @@
+"use client";
+
 import type { PhSignal } from "@github-trending/core/types";
 import { phOutboundLinks } from "@github-trending/core/ph-signal-utils";
-import { getLocale, getTranslations } from "next-intl/server";
+import { useLocale, useTranslations } from "next-intl";
 
 interface PhDetailPanelProps {
   signal: PhSignal;
@@ -19,11 +21,11 @@ function formatFullDate(iso: string, locale: string): string {
   }
 }
 
-export async function PhDetailPanel({ signal }: PhDetailPanelProps) {
-  const t = await getTranslations("ph");
-  const launchT = await getTranslations("launch");
-  const ctaT = await getTranslations("cta");
-  const locale = await getLocale();
+export function PhDetailPanel({ signal }: PhDetailPanelProps) {
+  const t = useTranslations("ph");
+  const launchT = useTranslations("launch");
+  const ctaT = useTranslations("cta");
+  const locale = useLocale();
   const { github, website } = phOutboundLinks(signal);
 
   return (
@@ -51,7 +53,8 @@ export async function PhDetailPanel({ signal }: PhDetailPanelProps) {
         )}
       <div className="ph-panel__stats">
         <span>
-          {t("votes")} <strong>{signal.votesCount.toLocaleString(locale)}</strong>
+          {t("votes")}{" "}
+          <strong>{signal.votesCount.toLocaleString(locale)}</strong>
         </span>
         {signal.commentsCount != null && signal.commentsCount > 0 && (
           <span>

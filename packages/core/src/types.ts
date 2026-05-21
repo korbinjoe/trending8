@@ -139,6 +139,39 @@ export const PhFeedResponseSchema = z.object({
   updatedAt: z.string().nullable(),
 });
 
+export const PhLaunchLinkageSchema = z.enum(["indexed", "launch", "product"]);
+
+export const PhLaunchDetailIndexedSchema = z.object({
+  linkage: z.literal("indexed"),
+  productName: z.string(),
+  signal: PhSignalSchema,
+  repoSlug: z.string(),
+  owner: z.string(),
+  name: z.string(),
+  language: z.string().nullable().optional(),
+  totalStars: z.number().int().nonnegative().optional(),
+});
+
+export const PhLaunchDetailLaunchSchema = z.object({
+  linkage: z.literal("launch"),
+  productName: z.string(),
+  signal: PhSignalSchema,
+  githubOwner: z.string(),
+  githubName: z.string(),
+});
+
+export const PhLaunchDetailProductSchema = z.object({
+  linkage: z.literal("product"),
+  productName: z.string(),
+  signal: PhSignalSchema,
+});
+
+export const PhLaunchDetailSchema = z.discriminatedUnion("linkage", [
+  PhLaunchDetailIndexedSchema,
+  PhLaunchDetailLaunchSchema,
+  PhLaunchDetailProductSchema,
+]);
+
 export type FeedView = z.infer<typeof FeedViewSchema>;
 export type GithubFeedView = z.infer<typeof GithubFeedViewSchema>;
 export type PhGithubFilter = z.infer<typeof PhGithubFilterSchema>;
@@ -150,6 +183,8 @@ export type PhLaunchItem = z.infer<typeof PhLaunchItemSchema>;
 export type PhProductItem = z.infer<typeof PhProductItemSchema>;
 export type PhFeedEntry = z.infer<typeof PhFeedEntrySchema>;
 export type PhFeedResponse = z.infer<typeof PhFeedResponseSchema>;
+export type PhLaunchLinkage = z.infer<typeof PhLaunchLinkageSchema>;
+export type PhLaunchDetail = z.infer<typeof PhLaunchDetailSchema>;
 export type RepoAlternativeDetail = z.infer<typeof RepoAlternativeDetailSchema>;
 export type RepoDetail = z.infer<typeof RepoDetailSchema>;
 export type CompareResponse = z.infer<typeof CompareResponseSchema>;

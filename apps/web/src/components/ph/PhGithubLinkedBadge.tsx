@@ -9,14 +9,12 @@ interface PhGithubLinkedBadgeProps {
   /** Repo is indexed on this site (PH + GitHub trending chart). */
   indexed?: boolean;
   className?: string;
-  onClick?: (event: React.MouseEvent) => void;
 }
 
 export function PhGithubLinkedBadge({
   signal,
   indexed = false,
   className = "",
-  onClick,
 }: PhGithubLinkedBadgeProps) {
   const t = useTranslations("ph");
   const githubUrl = signal.githubUrl?.trim();
@@ -33,7 +31,7 @@ export function PhGithubLinkedBadge({
       target="_blank"
       rel="noopener noreferrer"
       className={`badge-signal badge-signal--github-linked ${className}`.trim()}
-      onClick={onClick}
+      onClick={(e) => e.stopPropagation()}
     >
       {label}
     </a>

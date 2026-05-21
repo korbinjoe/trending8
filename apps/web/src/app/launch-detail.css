@@ -1,0 +1,54 @@
+.launch-detail__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.25rem;
+  line-height: 1.2;
+}
+
+.launch-detail__attribution {
+  margin-top: 1.5rem;
+}
+
+.panel--bridge {
+  border-color: color-mix(in srgb, var(--color-accent) 35%, var(--color-border));
+}
+
+.panel--warn {
+  border-color: color-mix(in srgb, var(--color-warn, #d4a72c) 40%, var(--color-border));
+  background: color-mix(in srgb, var(--color-warn, #d4a72c) 6%, var(--color-surface));
+}
+
+.panel__body {
+  margin: 0 0 1rem;
+  color: var(--color-text-muted, var(--color-text));
+  line-height: 1.55;
+}
+
+.launch-bridge__meta {
+  display: grid;
+  gap: 0.5rem 1.25rem;
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+}
+
+.launch-bridge__meta dt {
+  font-weight: 600;
+  color: var(--color-text-muted, var(--color-text));
+}
+
+.launch-bridge__meta dd {
+  margin: 0.15rem 0 0;
+}
+
+.rank-card__title-text {
+  color: inherit;
+}
+
+.ph-standalone-card .rank-card__cover {
+  cursor: pointer;
+}
+
+.ph-standalone-card .rank-card__title-text:hover {
+  color: var(--color-accent);
+}

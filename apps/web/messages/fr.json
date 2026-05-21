@@ -104,7 +104,22 @@
     "notIndexed": "Pas encore indexé sur ce site",
     "productOnly": "Aucun dépôt GitHub lié",
     "website": "Site web",
-    "websitePhLink": "Site web (lien PH)"
+    "websitePhLink": "Site web (lien PH)",
+    "detailBack": "Back to Product Hunt feed",
+    "detailAttribution": "Launch metrics from Product Hunt. We do not host PH comments or voting.",
+    "indexedBridgeTitle": "Indexed on GitHub Trending+",
+    "indexedBridgeBody": "This repository is in our chart. Open the trend detail page for star velocity, health signals, and alternatives.",
+    "indexedRepoLabel": "Repository",
+    "indexedLanguageLabel": "Language",
+    "indexedStarsLabel": "Total stars (snapshot)",
+    "viewTrendingDetail": "View GitHub trend detail",
+    "notIndexedTitle": "Not indexed on this site yet",
+    "notIndexedBody": "We linked this launch to a public GitHub repository, but it is not in our ingest yet. Star velocity and health metrics appear after the repo is indexed.",
+    "githubSlugTitle": "GitHub repository",
+    "productCtaTitle": "Product website",
+    "notFoundTitle": "Launch not found",
+    "notFoundBody": "This Product Hunt post is outside our ingest window or the slug is invalid. Try the PH feed with a wider period.",
+    "notFoundCta": "Browse PH launches"
   },
   "health": {
     "active": "Actif",

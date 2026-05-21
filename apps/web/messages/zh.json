@@ -104,7 +104,22 @@
     "notIndexed": "尚未收录至本站榜单",
     "productOnly": "未关联 GitHub 仓库",
     "website": "官网",
-    "websitePhLink": "官网（PH 短链）"
+    "websitePhLink": "官网（PH 短链）",
+    "detailBack": "返回 Product Hunt 榜单",
+    "detailAttribution": "发布数据来自 Product Hunt。本站不展示 PH 评论或投票明细。",
+    "indexedBridgeTitle": "已收录至 GitHub Trending+",
+    "indexedBridgeBody": "该仓库已在站内榜单中。打开趋势详情页可查看 Star 增速、健康度与替代品。",
+    "indexedRepoLabel": "仓库",
+    "indexedLanguageLabel": "语言",
+    "indexedStarsLabel": "总 Star（快照）",
+    "viewTrendingDetail": "查看 GitHub 趋势详情",
+    "notIndexedTitle": "尚未收录至本站",
+    "notIndexedBody": "我们已关联该发布的公开 GitHub 仓库，但尚未完成 ingest。收录后将显示 Star 增速与健康度等指标。",
+    "githubSlugTitle": "GitHub 仓库",
+    "productCtaTitle": "产品官网",
+    "notFoundTitle": "未找到该发布",
+    "notFoundBody": "该 Product Hunt 帖子不在当前 ingest 窗口内，或 slug 无效。请返回 PH 榜单并尝试更长的周期。",
+    "notFoundCta": "浏览 PH 发布"
   },
   "health": {
     "active": "活跃",

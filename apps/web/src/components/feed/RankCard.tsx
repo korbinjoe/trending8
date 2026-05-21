@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { PhBadge } from "@/components/ph/PhBadge";
 import { PhGithubLinkedBadge } from "@/components/ph/PhGithubLinkedBadge";
+import { usePrefetchLaunchDetail } from "@/hooks/usePrefetchLaunchDetail";
 import { HighlightedText } from "@/components/search/HighlightedText";
 import { githubRepoUrl } from "@/lib/site";
 import { AlternativesStrip } from "./AlternativesStrip";
@@ -62,6 +63,7 @@ export function RankCard({ item, highlightQuery }: RankCardProps) {
   const t = useTranslations();
   const tabT = useTranslations("tab");
   const router = useRouter();
+  const { launchDetailHref, prefetchLaunch } = usePrefetchLaunchDetail();
   const [chartOpen, setChartOpen] = useState(false);
   const repoHref = `/repo/${item.owner}/${item.name}`;
   const prefetchRepo = () => router.prefetch(repoHref);
@@ -78,13 +80,20 @@ export function RankCard({ item, highlightQuery }: RankCardProps) {
   return (
     <li className={`rank-item${hasAltStrip ? " rank-item--alt" : ""}`}>
       <div className="rank-card">
-        <Link
-          href={repoHref}
-          prefetch
+        <div
           className="rank-card__cover"
+          role="link"
+          tabIndex={0}
           aria-label={repoLabel}
           onMouseEnter={prefetchRepo}
           onFocus={prefetchRepo}
+          onClick={() => router.push(repoHref)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              router.push(repoHref);
+            }
+          }}
         />
         <div className="rank-card__layout">
           <div className="rank-card__content">
@@ -187,7 +196,13 @@ export function RankCard({ item, highlightQuery }: RankCardProps) {
             <div className="rank-card__bottom">
               {hasChips && (
                 <div className="rank-card__chips">
-                  {item.phSignal && <PhBadge signal={item.phSignal} />}
+                  {item.phSignal && (
+                    <PhBadge
+                      signal={item.phSignal}
+                      href={launchDetailHref(item.phSignal.slug)}
+                      onWarm={() => prefetchLaunch(item.phSignal!.slug)}
+                    />
+                  )}
                   {item.phSignal?.githubUrl && (
                     <PhGithubLinkedBadge signal={item.phSignal} indexed />
                   )}

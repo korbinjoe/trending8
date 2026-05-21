@@ -47,3 +47,5 @@ export {
   type PhLeaderboardQuery,
   type PhLeaderboardPage,
 } from "./leaderboard";
+export { classifyPhLaunchLinkage } from "./launch-linkage";
+export { getPhLaunchBySlug } from "./launch-detail";

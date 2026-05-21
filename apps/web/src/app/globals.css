@@ -692,13 +692,10 @@ html {
   inset: 0;
   z-index: 0;
   border-radius: inherit;
+  cursor: pointer;
 }
 
 .rank-card__cover:focus-visible {
-  outline: none;
-}
-
-.rank-card:has(.rank-card__cover:focus-visible) {
   outline: 2px solid var(--color-accent);
   outline-offset: -2px;
 }
@@ -712,7 +709,7 @@ html {
   pointer-events: none;
 }
 
-.rank-card__layout :is(a, button, input, select, textarea, label) {
+.rank-card__layout :is(a, button, input, select, textarea, label, [role="link"]) {
   pointer-events: auto;
 }
 

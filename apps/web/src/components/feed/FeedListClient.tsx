@@ -7,7 +7,12 @@ import { PhFeedEmpty } from "@/components/feed/PhFeedEmpty";
 import { PhLaunchCard } from "@/components/feed/PhLaunchCard";
 import { PhProductCard } from "@/components/feed/PhProductCard";
 import { RankCard } from "@/components/feed/RankCard";
+import { useRouter } from "@/i18n/navigation";
 import { buildFeedApiSearchParams } from "@/lib/feed-api-params";
+import {
+  launchDetailHref,
+  phFeedLaunchSlugs,
+} from "@/lib/launch-detail-href";
 import type { ParsedFeedParams } from "@/lib/feed-params";
 import {
   feedHideShellsParser,
@@ -74,6 +79,7 @@ export function FeedListClient({
   const [phGithub] = useQueryState("phGithub", feedPhGithubParser);
 
   const isPhView = view === "ph";
+  const router = useRouter();
 
   const feedParams = useMemo(
     (): Pick<
@@ -260,6 +266,13 @@ export function FeedListClient({
     }
     void loadFeed(undefined, { fromFilter: true });
   }, [paramsKey, loadFeed]);
+
+  useEffect(() => {
+    if (!isPhView || phItems.length === 0) return;
+    for (const slug of phFeedLaunchSlugs(phItems)) {
+      router.prefetch(launchDetailHref(slug));
+    }
+  }, [isPhView, phItems, router]);
 
   const itemCount = isPhView ? phItems.length : githubItems.length;
 

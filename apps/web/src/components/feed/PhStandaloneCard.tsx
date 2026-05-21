@@ -1,8 +1,10 @@
 "use client";
 
+import { PhCardActions } from "@/components/feed/PhCardActions";
 import { PhBadge } from "@/components/ph/PhBadge";
 import { PhGithubLinkedBadge } from "@/components/ph/PhGithubLinkedBadge";
-import { PhCardActions } from "@/components/feed/PhCardActions";
+import { usePrefetchLaunchDetail } from "@/hooks/usePrefetchLaunchDetail";
+import { Link } from "@/i18n/navigation";
 import type { PhLaunchItem, PhProductItem } from "@github-trending/core/types";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -18,11 +20,11 @@ export function PhStandaloneCard({ variant, item }: PhStandaloneCardProps) {
   const phT = useTranslations("ph");
   const locale = useLocale();
   const { phSignal } = item;
+  const { launchDetailHref, prefetchLaunch } = usePrefetchLaunchDetail();
+  const launchHref = launchDetailHref(phSignal.slug);
   const isTopRank = item.rank <= 3;
   const hasGithub = Boolean(phSignal.githubUrl?.trim());
-  const statusLabel = hasGithub
-    ? null
-    : launchT("productOnly");
+  const statusLabel = hasGithub ? null : launchT("productOnly");
 
   const showDescription =
     phSignal.description &&
@@ -37,11 +39,21 @@ export function PhStandaloneCard({ variant, item }: PhStandaloneCardProps) {
     );
   }
 
+  const warmLaunch = () => prefetchLaunch(phSignal.slug);
+
   return (
     <li className="rank-item">
       <article
         className={`rank-card ph-standalone-card ph-standalone-card--${variant}`}
       >
+        <Link
+          href={launchHref}
+          prefetch
+          className="rank-card__cover"
+          aria-label={item.name}
+          onMouseEnter={warmLaunch}
+          onFocus={warmLaunch}
+        />
         <div className="rank-card__layout">
           <div className="rank-card__content">
             <div className="rank-card__top">
@@ -51,7 +63,7 @@ export function PhStandaloneCard({ variant, item }: PhStandaloneCardProps) {
                 {item.rank}
               </span>
               <div className="rank-card__title">
-                <span className="owner">{item.name}</span>
+                <span className="owner rank-card__title-text">{item.name}</span>
               </div>
               <div className="rank-card__stats">
                 <span className="delta">{statsParts.join(" · ")}</span>
@@ -67,7 +79,11 @@ export function PhStandaloneCard({ variant, item }: PhStandaloneCardProps) {
             )}
             <div className="rank-card__bottom">
               <div className="rank-card__chips">
-                <PhBadge signal={phSignal} />
+                <PhBadge
+                  signal={phSignal}
+                  href={launchHref}
+                  onWarm={warmLaunch}
+                />
                 {hasGithub && (
                   <PhGithubLinkedBadge signal={phSignal} indexed={false} />
                 )}

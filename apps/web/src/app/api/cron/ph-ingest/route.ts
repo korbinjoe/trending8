@@ -38,6 +38,7 @@ async function handlePhIngest(request: Request) {
     if (!result.skipped) {
       revalidateTag("feed");
       revalidateTag("ph-feed");
+      revalidateTag("ph-launch");
       revalidateTag("ranking");
       revalidateTag("topics");
     }
