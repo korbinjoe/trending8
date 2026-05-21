@@ -125,7 +125,6 @@ export function FeedListClient({
     } else if (!isPhView && initialFeed) {
       githubCacheRef.current.set(key, initialFeed);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount-only SSR seed
   }, []);
 
   const loadFeed = useCallback(

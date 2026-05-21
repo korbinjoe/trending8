@@ -2,7 +2,6 @@ import {
   FeedPeriodSchema,
   PhGithubFilterSchema,
   type FeedItem,
-  type FeedPeriod,
   type PhFeedEntry,
   type PhFeedResponse,
   type PhGithubFilter,
@@ -13,7 +12,7 @@ import { periodStart, shouldExclude } from "@github-trending/core";
 import { getAlternativesForRepos } from "@github-trending/github";
 import { classifyPhEntryKind } from "@/lib/ph-feed-kind";
 import { buildPhSignalFromRow } from "@/lib/ph-feed-meta";
-import { getPhLeaderboardPosts, type PhLeaderboardRow } from "@github-trending/producthunt";
+import { getPhLeaderboardPosts } from "@github-trending/producthunt";
 import { getDb } from "@github-trending/db";
 import { periodMetrics, productHuntPosts, repositories } from "@github-trending/db";
 import { and, desc, eq, inArray } from "drizzle-orm";

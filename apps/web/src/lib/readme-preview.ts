@@ -60,10 +60,11 @@ export function parseMarkdownLinkTarget(raw: string): { url: string; rest: strin
   const titleMatch = trimmed.match(
     /^(.+?)\s+("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')\s*$/,
   );
-  if (titleMatch) {
+  const titleUrl = titleMatch?.[1];
+  if (titleUrl) {
     return {
-      url: titleMatch[1].trim(),
-      rest: trimmed.slice(titleMatch[1].length),
+      url: titleUrl.trim(),
+      rest: trimmed.slice(titleUrl.length),
     };
   }
 
