@@ -2,10 +2,11 @@ import { FeedListSkeleton } from "@/components/feed/FeedListSkeleton";
 import { FeedLoadingProvider } from "@/components/feed/FeedLoadingContext";
 import { FilterBar } from "@/components/feed/FilterBar";
 import { HomeFeedBlock } from "@/components/home/HomeFeedBlock";
-import { HomeHero } from "@/components/home/HomeHero";
-import { HomeHeroFallback } from "@/components/home/HomeHeroFallback";
+import { Hero } from "@/components/layout/Hero";
 import { parseFeedParams } from "@/lib/feed-params";
+import { getCachedLatestCompletedRun } from "@/lib/ranking-run-cache";
 import { getCachedSnapshotTopicFilters } from "@/lib/topic-cache";
+import { toIsoString } from "@/lib/timestamp";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 
@@ -23,16 +24,16 @@ export default async function HomePage({
   setRequestLocale(locale);
 
   const feedParams = parseFeedParams(sp);
-  const [topicFilters, feedT] = await Promise.all([
+  const [topicFilters, run, feedT] = await Promise.all([
     getCachedSnapshotTopicFilters().catch(() => [] as string[]),
+    getCachedLatestCompletedRun(feedParams.period, feedParams.view),
     getTranslations("feed"),
   ]);
+  const updatedAt = toIsoString(run?.completedAt);
 
   return (
     <FeedLoadingProvider>
-      <Suspense fallback={<HomeHeroFallback />}>
-        <HomeHero feedParams={feedParams} />
-      </Suspense>
+      <Hero updatedAt={updatedAt} />
       <FilterBar topicFilters={topicFilters} />
       <Suspense
         fallback={

@@ -5,10 +5,18 @@ import { formatCompactNumber, formatRelativePush } from "@/lib/format";
 import { FavoriteButton } from "@/components/favorites/FavoriteButton";
 import { PhDetailPanel } from "@/components/ph/PhDetailPanel";
 
+type PeriodLabelKey =
+  | "filter.today"
+  | "filter.week"
+  | "filter.month"
+  | "filter.halfYear"
+  | "filter.year";
+
 interface RepoDetailViewProps {
   detail: RepoDetail;
   locale: string;
   readmePreview: string[] | null;
+  periodLabelKey: PeriodLabelKey;
 }
 
 function trustDotClass(health: RepoDetail["health"]): string {
@@ -26,9 +34,11 @@ export async function RepoDetailView({
   detail,
   locale,
   readmePreview,
+  periodLabelKey,
 }: RepoDetailViewProps) {
   const t = await getTranslations();
   const phT = await getTranslations("ph");
+  const periodLabel = t(periodLabelKey);
 
   const whyHot: string[] = [];
   if (detail.phSignal) {
@@ -41,7 +51,9 @@ export async function RepoDetailView({
     );
   }
   if (detail.deltaStars > 0) {
-    whyHot.push(t("repo.whyHot.stars", { delta: detail.deltaStars }));
+    whyHot.push(
+      t("repo.whyHot.stars", { delta: detail.deltaStars, period: periodLabel }),
+    );
   }
   if (detail.isEarlySignal) {
     whyHot.push(t("repo.whyHot.early"));
@@ -137,7 +149,9 @@ export async function RepoDetailView({
 
       <div className="stat-grid">
         <div className="stat">
-          <span className="stat__label">{t("repo.statDelta")}</span>
+          <span className="stat__label">
+            {t("repo.statDelta", { period: periodLabel })}
+          </span>
           <span className="stat__value stat__value--accent">+{detail.deltaStars} ★</span>
         </div>
         <div className="stat">

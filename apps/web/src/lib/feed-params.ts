@@ -19,11 +19,18 @@ export interface ParsedFeedParams {
   includeNoise: boolean;
 }
 
+const DEFAULT_FEED_PERIOD: FeedPeriod = "today";
+
+export function parseFeedPeriod(period?: string): FeedPeriod {
+  const parsed = FeedPeriodSchema.safeParse(period);
+  return parsed.success ? parsed.data : DEFAULT_FEED_PERIOD;
+}
+
 export function parseFeedParams(
   searchParams: FeedSearchParams,
 ): ParsedFeedParams {
   const viewRaw = pickString(searchParams.view) ?? "velocity";
-  const periodRaw = pickString(searchParams.period) ?? "today";
+  const periodRaw = pickString(searchParams.period) ?? DEFAULT_FEED_PERIOD;
   const hideShellsRaw = pickString(searchParams.hideShells);
 
   const view = FeedViewSchema.parse(viewRaw);
