@@ -5,6 +5,11 @@ export interface PhTopicNode {
   name: string;
 }
 
+export interface PhProductLinkNode {
+  type: string;
+  url: string;
+}
+
 export interface PhPostNode {
   id: string;
   slug: string;
@@ -13,6 +18,7 @@ export interface PhPostNode {
   description: string | null;
   url: string;
   website: string | null;
+  productLinks: PhProductLinkNode[];
   votesCount: number;
   commentsCount: number;
   featuredAt: string | null;
@@ -35,6 +41,7 @@ interface PhPostApiNode {
   description: string | null;
   url: string;
   website: string | null;
+  productLinks: Array<{ type: string; url: string }>;
   votesCount: number;
   commentsCount: number;
   featuredAt: string | null;
@@ -60,6 +67,10 @@ const RECENT_POSTS_QUERY = `
           description
           url
           website
+          productLinks {
+            type
+            url
+          }
           votesCount
           commentsCount
           featuredAt
@@ -94,6 +105,10 @@ const POSTS_BY_URL_QUERY = `
           description
           url
           website
+          productLinks {
+            type
+            url
+          }
           votesCount
           commentsCount
           featuredAt
@@ -121,6 +136,7 @@ function mapNode(node: PhPostApiNode): PhPostNode {
     description: node.description,
     url: node.url,
     website: node.website,
+    productLinks: node.productLinks ?? [],
     votesCount: node.votesCount,
     commentsCount: node.commentsCount,
     featuredAt: node.featuredAt,

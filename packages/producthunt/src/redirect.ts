@@ -1,5 +1,10 @@
 import { REDIRECT_MAX_HOPS, REDIRECT_TIMEOUT_MS } from "./config";
-import { parseGithubRepoUrl } from "./github-url";
+import {
+  extractGithubFromText,
+  githubRepoCanonicalUrl,
+  parseGithubRepoUrl,
+  type GithubRepoSlug,
+} from "./github-url";
 
 export async function resolveWebsiteUrl(
   redirectUrl: string,
@@ -37,6 +42,41 @@ export async function resolveWebsiteUrl(
       return res.url || current;
     }
     return current;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+const WEBSITE_HTML_MAX_BYTES = 200_000;
+
+export async function resolveGithubFromWebsiteHtml(
+  pageUrl: string,
+): Promise<{ slug: GithubRepoSlug; url: string } | null> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), REDIRECT_TIMEOUT_MS);
+
+  try {
+    const res = await fetch(pageUrl, {
+      method: "GET",
+      redirect: "follow",
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "github-trending-plus/1.0",
+        Accept: "text/html",
+      },
+    });
+    if (!res.ok) return null;
+
+    const html = (await res.text()).slice(0, WEBSITE_HTML_MAX_BYTES);
+    const slug = extractGithubFromText(html);
+    if (!slug) return null;
+
+    return {
+      slug,
+      url: githubRepoCanonicalUrl(slug.owner, slug.name),
+    };
   } catch {
     return null;
   } finally {

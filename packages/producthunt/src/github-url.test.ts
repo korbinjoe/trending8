@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 import {
+  extractGithubFromProductLinks,
   extractGithubFromText,
   normalizeGithubSlug,
   parseGithubRepoUrl,
@@ -21,6 +22,31 @@ describe("extractGithubFromText", () => {
 
   it("returns null when no match", () => {
     expect(extractGithubFromText("no links here")).toBeNull();
+  });
+});
+
+describe("extractGithubFromProductLinks", () => {
+  it("prefers link typed as github", () => {
+    expect(
+      extractGithubFromProductLinks([
+        { type: "website", url: "https://emdash.sh" },
+        { type: "github", url: "https://github.com/acme/emdash" },
+      ]),
+    ).toEqual({
+      slug: { owner: "acme", name: "emdash" },
+      url: "https://github.com/acme/emdash",
+    });
+  });
+
+  it("falls back to any product link with github.com URL", () => {
+    expect(
+      extractGithubFromProductLinks([
+        { type: "download", url: "https://github.com/oven-sh/bun" },
+      ]),
+    ).toEqual({
+      slug: { owner: "oven-sh", name: "bun" },
+      url: "https://github.com/oven-sh/bun",
+    });
   });
 });
 

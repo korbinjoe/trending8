@@ -14,7 +14,6 @@ import { useQueryState } from "nuqs";
 
 const PERIODS = ["today", "week", "month", "halfYear", "year"] as const;
 const VIEWS = ["velocity", "early", "ph"] as const;
-const PH_GITHUB_FILTERS = ["all", "linked"] as const;
 const LANGUAGES = [
   { value: "", labelKey: "allLanguages" as const },
   { value: "Python", label: "Python" },
@@ -94,34 +93,17 @@ export function FilterBar({ topicFilters }: FilterBarProps) {
             ))}
           </div>
 
-          <label className="filter-toggle">
-            <input
-              type="checkbox"
-              checked={hideShells}
-              onChange={(e) => setHideShells(e.target.checked)}
-            />
-            <span>{t("hideShells")}</span>
-          </label>
+          {!isPhView && (
+            <label className="filter-toggle">
+              <input
+                type="checkbox"
+                checked={hideShells}
+                onChange={(e) => setHideShells(e.target.checked)}
+              />
+              <span>{t("hideShells")}</span>
+            </label>
+          )}
         </div>
-
-        {isPhView && (
-          <div
-            className="seg seg--ph-github"
-            role="group"
-            aria-label={phFilterT("label")}
-          >
-            {PH_GITHUB_FILTERS.map((f) => (
-              <button
-                key={f}
-                type="button"
-                className={phGithub === f ? "is-active" : ""}
-                onClick={() => setPhGithub(f)}
-              >
-                {f === "all" ? phFilterT("all") : phFilterT("linked")}
-              </button>
-            ))}
-          </div>
-        )}
 
         <TopicFilterChips topicFilters={topicFilters} />
       </section>
@@ -146,7 +128,41 @@ export function FilterBar({ topicFilters }: FilterBarProps) {
         ))}
       </div>
 
-      <p className="tab-hint">{tabHint}</p>
+      {isPhView && (
+        <div className="ph-tab-toolbar" role="group" aria-label={phFilterT("label")}>
+          <label className="filter-toggle filter-toggle--ph-github">
+            <input
+              type="checkbox"
+              checked={phGithub === "linked"}
+              onChange={(e) =>
+                setPhGithub(e.target.checked ? "linked" : "all")
+              }
+            />
+            <span>{phFilterT("githubOnly")}</span>
+          </label>
+        </div>
+      )}
+
+      <p className="tab-hint">
+        {isPhView && phGithub === "linked"
+          ? tabT("hintPhLinked")
+          : tabHint}
+      </p>
+
+      {isPhView && (
+        <div className="signal-legend signal-legend--ph" aria-label={legendT("title")}>
+          <span className="signal-legend__item">
+            <span className="badge-signal badge-signal--github-linked">
+              {phFilterT("legendGithubSample")}
+            </span>
+            <span>{phFilterT("legendGithub")}</span>
+          </span>
+          <span className="signal-legend__item">
+            <span className="badge-signal badge-signal--ph">PH</span>
+            <span>{legendT("ph")}</span>
+          </span>
+        </div>
+      )}
 
       {!isPhView && (
         <div className="signal-legend" aria-label={legendT("title")}>

@@ -10,6 +10,7 @@ import {
 } from "./config";
 import { fetchAllRecentPosts } from "./posts";
 import { resolvePostGithubLink, upsertProductHuntPost } from "./linking";
+import { hasGithubProductLink } from "./product-link-resolve";
 
 export interface PhIngestLogger {
   info: (msg: string, meta?: Record<string, unknown>) => void;
@@ -84,12 +85,17 @@ export async function runPhIngest(options?: {
 
       for (const post of posts) {
         try {
+          const needsRedirectResolve =
+            Boolean(post.website) || hasGithubProductLink(post.productLinks);
           const skipRedirect =
-            Boolean(post.website) &&
+            needsRedirectResolve &&
             redirectResolves >= MAX_REDIRECT_RESOLVES_PER_BATCH;
-          const link = await resolvePostGithubLink(db, post, { skipRedirect });
+          const link = await resolvePostGithubLink(db, post, {
+            skipRedirect,
+            logger,
+          });
 
-          if (post.website && !skipRedirect) {
+          if (needsRedirectResolve && !skipRedirect) {
             redirectResolves += 1;
           }
 

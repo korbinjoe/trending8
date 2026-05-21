@@ -53,7 +53,7 @@ function phEntryKey(entry: PhFeedEntry): string {
     return `repo-${entry.item.slug}-${entry.item.rank}`;
   }
   if (entry.kind === "launch") {
-    return `launch-${entry.item.slug}-${entry.item.rank}`;
+    return `launch-${entry.item.phSignal.slug}-${entry.item.rank}`;
   }
   return `product-${entry.item.phSignal.slug}-${entry.item.rank}`;
 }
@@ -116,13 +116,17 @@ export function FeedListClient({
   const [overlayMinHeight, setOverlayMinHeight] = useState<number | undefined>();
   const [error, setError] = useState<string | null>(null);
 
+  // Seed cache once from SSR props only — do not re-run when paramsKey changes or
+  // initialPhFeed would overwrite filtered results (e.g. phGithub=linked).
   useEffect(() => {
+    const key = feedParamsKey(feedParamsRef.current);
     if (isPhView && initialPhFeed) {
-      phCacheRef.current.set(paramsKey, initialPhFeed);
+      phCacheRef.current.set(key, initialPhFeed);
     } else if (!isPhView && initialFeed) {
-      githubCacheRef.current.set(paramsKey, initialFeed);
+      githubCacheRef.current.set(key, initialFeed);
     }
-  }, [paramsKey, initialFeed, initialPhFeed, isPhView]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount-only SSR seed
+  }, []);
 
   const loadFeed = useCallback(
     async (nextCursor?: string, options?: { fromFilter?: boolean }) => {
@@ -170,7 +174,7 @@ export function FeedListClient({
 
       const params = buildFeedApiSearchParams(feedParamsRef.current, nextCursor);
       try {
-        const res = await fetch(`/api/feed?${params}`);
+        const res = await fetch(`/api/feed?${params}`, { cache: "no-store" });
         if (ph) {
           const data = (await res.json()) as PhFeedResponse & { error?: string };
           if (generation !== fetchGenRef.current) return;

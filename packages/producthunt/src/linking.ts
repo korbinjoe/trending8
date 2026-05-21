@@ -7,9 +7,14 @@ import {
   githubRepoCanonicalUrl,
   type GithubRepoSlug,
 } from "./github-url";
+import { resolveGithubViaPhReverseLookup } from "./ph-github-lookup";
+import {
+  hasGithubProductLink,
+  resolveGithubFromProductLinks,
+} from "./product-link-resolve";
 import { resolveGithubFromWebsite } from "./redirect";
 
-export type MatchedVia = "redirect" | "description" | "url_query";
+export type MatchedVia = "product_link" | "redirect" | "description" | "url_query";
 
 export interface LinkResult {
   githubOwner: string | null;
@@ -52,9 +57,38 @@ export async function linkPostFromGithub(
 export async function resolvePostGithubLink(
   db: Database,
   post: PhPostNode,
-  options?: { skipRedirect?: boolean },
+  options?: {
+    skipRedirect?: boolean;
+    logger?: { warn: (msg: string, meta?: Record<string, unknown>) => void };
+  },
 ): Promise<LinkResult> {
   if (!options?.skipRedirect) {
+    const fromProductLinks = await resolveGithubFromProductLinks(post.productLinks);
+    if (fromProductLinks) {
+      return linkPostFromGithub(
+        db,
+        fromProductLinks.slug,
+        "product_link",
+        fromProductLinks.url,
+      );
+    }
+
+    if (hasGithubProductLink(post.productLinks)) {
+      const fromPhLookup = await resolveGithubViaPhReverseLookup(
+        post.slug,
+        post.slug,
+        options?.logger,
+      );
+      if (fromPhLookup) {
+        return linkPostFromGithub(
+          db,
+          fromPhLookup.slug,
+          "url_query",
+          fromPhLookup.url,
+        );
+      }
+    }
+
     const fromWebsite = await resolveGithubFromWebsite(post.website);
     if (fromWebsite) {
       return linkPostFromGithub(

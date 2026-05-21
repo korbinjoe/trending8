@@ -7,6 +7,7 @@ import type { FeedItem } from "@github-trending/core/types";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { PhBadge } from "@/components/ph/PhBadge";
+import { PhGithubLinkedBadge } from "@/components/ph/PhGithubLinkedBadge";
 import { HighlightedText } from "@/components/search/HighlightedText";
 import { githubRepoUrl } from "@/lib/site";
 import { AlternativesStrip } from "./AlternativesStrip";
@@ -185,6 +186,16 @@ export function RankCard({ item, highlightQuery }: RankCardProps) {
                   {item.phSignal && (
                     <PhBadge
                       signal={item.phSignal}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                    />
+                  )}
+                  {item.phSignal?.githubUrl && (
+                    <PhGithubLinkedBadge
+                      signal={item.phSignal}
+                      indexed
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();

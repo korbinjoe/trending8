@@ -8,11 +8,11 @@ import {
   type PhGithubFilter,
   type PhLaunchItem,
   type PhProductItem,
-  type PhSignal,
 } from "@github-trending/core/types";
 import { periodStart, shouldExclude } from "@github-trending/core";
 import { getAlternativesForRepos } from "@github-trending/github";
 import { classifyPhEntryKind } from "@/lib/ph-feed-kind";
+import { buildPhSignalFromRow } from "@/lib/ph-feed-meta";
 import { getPhLeaderboardPosts, type PhLeaderboardRow } from "@github-trending/producthunt";
 import { getDb } from "@github-trending/db";
 import { periodMetrics, productHuntPosts, repositories } from "@github-trending/db";
@@ -22,17 +22,6 @@ import { compareUrl } from "./site";
 import { toIsoString } from "./timestamp";
 
 const PAGE_SIZE = 24;
-
-function rowToPhSignal(row: PhLeaderboardRow): PhSignal {
-  return {
-    slug: row.slug,
-    phUrl: row.phUrl,
-    votesCount: row.votesCount,
-    featuredAt: row.featuredAt?.toISOString() ?? null,
-    postedAt: row.postedAt.toISOString(),
-    tagline: row.tagline ?? undefined,
-  };
-}
 
 export async function getPhFeed(params: {
   period: string;
@@ -109,7 +98,7 @@ export async function getPhFeed(params: {
 
   for (const row of rows) {
     const kind = classifyPhEntryKind(row);
-    const phSignal = rowToPhSignal(row);
+    const phSignal = buildPhSignalFromRow(row);
 
     if (kind === "repo" && row.repoId) {
       const repo = repoById.get(row.repoId);
@@ -166,31 +155,13 @@ export async function getPhFeed(params: {
     }
 
     if (kind === "launch" && row.githubOwner && row.githubName) {
-      const launch: PhLaunchItem = {
-        rank,
-        name: row.name,
-        tagline: row.tagline ?? undefined,
-        githubOwner: row.githubOwner,
-        githubName: row.githubName,
-        slug: `${row.githubOwner}/${row.githubName}`,
-        phSignal,
-        votesCount: row.votesCount,
-        postedAt: row.postedAt.toISOString(),
-      };
+      const launch: PhLaunchItem = { rank, name: row.name, phSignal };
       entries.push({ kind: "launch", item: launch });
       rank += 1;
       continue;
     }
 
-    const product: PhProductItem = {
-      rank,
-      name: row.name,
-      tagline: row.tagline ?? undefined,
-      phSignal,
-      votesCount: row.votesCount,
-      postedAt: row.postedAt.toISOString(),
-      website: row.websiteRedirect ?? undefined,
-    };
+    const product: PhProductItem = { rank, name: row.name, phSignal };
     entries.push({ kind: "product", item: product });
     rank += 1;
   }

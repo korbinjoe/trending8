@@ -17,11 +17,7 @@ const nextConfig: NextConfig = {
     "@github-trending/github",
   ],
   experimental: {
-    optimizePackageImports: [
-      "drizzle-orm",
-      "next-intl",
-      "@github-trending/core",
-    ],
+    optimizePackageImports: ["drizzle-orm", "next-intl"],
     staleTimes: {
       dynamic: 30,
       static: 180,

@@ -44,6 +44,33 @@ export function extractGithubFromText(text: string | null | undefined): GithubRe
   return normalizeGithubSlug(match[1], match[2]);
 }
 
+export interface PhProductLink {
+  type: string;
+  url: string;
+}
+
+/** GitHub repo from PH `productLinks` (e.g. type "github" or github.com URL). */
+export function extractGithubFromProductLinks(
+  links: PhProductLink[] | null | undefined,
+): { slug: GithubRepoSlug; url: string } | null {
+  if (!links?.length) return null;
+
+  const sorted = [...links].sort((a, b) => {
+    const aGithub = /github/i.test(a.type) ? 0 : 1;
+    const bGithub = /github/i.test(b.type) ? 0 : 1;
+    return aGithub - bGithub;
+  });
+
+  for (const link of sorted) {
+    const slug = parseGithubRepoUrl(link.url);
+    if (slug) {
+      return { slug, url: githubRepoCanonicalUrl(slug.owner, slug.name) };
+    }
+  }
+
+  return null;
+}
+
 export function githubRepoCanonicalUrl(owner: string, name: string): string {
   return `https://github.com/${owner}/${name}`;
 }

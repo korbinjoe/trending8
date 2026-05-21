@@ -22,3 +22,9 @@ research/
 
 # Build artifacts
 *.tsbuildinfo
+
+# Local development
+.cursor/
+.claude/
+.opencode/
+.playwright-mcp/

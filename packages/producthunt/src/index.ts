@@ -5,10 +5,11 @@ export {
 } from "./auth";
 export { ProductHuntConfigError, ProductHuntRateLimitError } from "./errors";
 export { phGraphql } from "./client";
-export type { PhPostNode } from "./posts";
+export type { PhPostNode, PhProductLinkNode } from "./posts";
 export { fetchRecentPosts, fetchAllRecentPosts, fetchPostByGithubUrl } from "./posts";
 export {
   extractGithubFromText,
+  extractGithubFromProductLinks,
   parseGithubRepoUrl,
   normalizeGithubSlug,
   githubRepoCanonicalUrl,
@@ -31,6 +32,15 @@ export {
   getPhSignalForRepoId,
   relinkUnlinkedPosts,
 } from "./ph-signals";
+export {
+  buildPhSignalFromRow,
+  phOutboundLinks,
+  pickGithubUrl,
+  pickWebsiteUrl,
+  isPhTrackingUrl,
+  truncatePhDescription,
+} from "./ph-signal-map";
+export type { PhPostRow } from "./ph-signal-map";
 export {
   getPhLeaderboardPosts,
   type PhLeaderboardRow,

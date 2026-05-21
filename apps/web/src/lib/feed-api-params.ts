@@ -11,8 +11,8 @@ export function buildFeedApiSearchParams(
   const q = new URLSearchParams();
   q.set("view", params.view);
   q.set("period", params.period);
-  if (params.view === "ph" && params.phGithub === "linked") {
-    q.set("phGithub", "linked");
+  if (params.view === "ph") {
+    q.set("phGithub", params.phGithub === "linked" ? "linked" : "all");
   }
   if (params.lang) q.set("lang", params.lang);
   if (params.topic) q.set("topic", params.topic);

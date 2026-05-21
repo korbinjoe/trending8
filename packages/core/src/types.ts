@@ -23,9 +23,14 @@ export const PhSignalSchema = z.object({
   slug: z.string(),
   phUrl: z.string(),
   votesCount: z.number().int().nonnegative(),
+  commentsCount: z.number().int().nonnegative().optional(),
   featuredAt: z.string().nullable(),
   postedAt: z.string(),
   tagline: z.string().optional(),
+  description: z.string().optional(),
+  topics: z.array(z.string()).optional(),
+  websiteUrl: z.string().optional(),
+  githubUrl: z.string().optional(),
 });
 
 export const FeedItemSchema = z.object({
@@ -113,23 +118,13 @@ export type PhSignal = z.infer<typeof PhSignalSchema>;
 export const PhLaunchItemSchema = z.object({
   rank: z.number(),
   name: z.string(),
-  tagline: z.string().optional(),
-  githubOwner: z.string(),
-  githubName: z.string(),
-  slug: z.string(),
   phSignal: PhSignalSchema,
-  votesCount: z.number(),
-  postedAt: z.string(),
 });
 
 export const PhProductItemSchema = z.object({
   rank: z.number(),
   name: z.string(),
-  tagline: z.string().optional(),
   phSignal: PhSignalSchema,
-  votesCount: z.number(),
-  postedAt: z.string(),
-  website: z.string().optional(),
 });
 
 export const PhFeedEntrySchema = z.discriminatedUnion("kind", [

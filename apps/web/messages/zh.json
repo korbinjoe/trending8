@@ -60,9 +60,12 @@
     "featured": "精选",
     "posted": "发布",
     "cta": "在 Product Hunt 查看",
+    "commentsShort": "{count} 条评论",
     "panelAttribution": "发布数据来自 Product Hunt。本站不展示 PH 评论或投票明细。",
     "attribution": "部分卡片会显示 PH 徽章，表示关联了近期 Product Hunt 发布。",
-    "footer": "发布信号可能包含 Product Hunt 数据。"
+    "footer": "发布信号可能包含 Product Hunt 数据。",
+    "githubLinked": "GitHub · {slug}",
+    "githubIndexed": "已收录 · {slug}"
   },
   "badge": {
     "shell": "空壳风险",
@@ -88,17 +91,20 @@
     "hintVelocity": "按所选周期绝对 Star 增量排序",
     "hintEarly": "相对增速 Top · 总 Star < 5k",
     "hintPh": "按所选时间窗口内 Product Hunt 票数排序",
+    "hintPhLinked": "仅显示已关联公开 GitHub 仓库的发布",
     "phAttribution": "发布数据来自 Product Hunt；本站不托管 PH 评论或投票。"
   },
   "phFilter": {
-    "label": "GitHub 关联",
-    "all": "全部发布",
-    "linked": "仅 GitHub 关联"
+    "label": "GitHub 仓库",
+    "githubOnly": "仅显示有 GitHub 仓库",
+    "legendGithub": "已关联公开 GitHub 仓库",
+    "legendGithubSample": "GitHub · owner/repo"
   },
   "launch": {
     "notIndexed": "尚未收录至本站榜单",
     "productOnly": "未关联 GitHub 仓库",
-    "website": "官网"
+    "website": "官网",
+    "websitePhLink": "官网（PH 短链）"
   },
   "health": {
     "active": "活跃",

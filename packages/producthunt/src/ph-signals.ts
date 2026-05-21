@@ -3,24 +3,7 @@ import type { Database } from "@github-trending/db";
 import { productHuntPosts } from "@github-trending/db";
 import { eq, inArray, isNotNull } from "drizzle-orm";
 import { findRepositoryId } from "./linking";
-
-function rowToPhSignal(row: {
-  slug: string;
-  phUrl: string;
-  votesCount: number;
-  featuredAt: Date | null;
-  postedAt: Date;
-  tagline: string | null;
-}): PhSignal {
-  return {
-    slug: row.slug,
-    phUrl: row.phUrl,
-    votesCount: row.votesCount,
-    featuredAt: row.featuredAt?.toISOString() ?? null,
-    postedAt: row.postedAt.toISOString(),
-    tagline: row.tagline ?? undefined,
-  };
-}
+import { buildPhSignalFromRow } from "./ph-signal-map";
 
 /** Latest PH launch per repository (featured_at preferred over posted_at). */
 export async function getPhSignalsForRepoIds(
@@ -52,7 +35,7 @@ export async function getPhSignalsForRepoIds(
 
   const result = new Map<string, PhSignal>();
   for (const [repoId, row] of bestByRepo) {
-    result.set(repoId, rowToPhSignal(row));
+    result.set(repoId, buildPhSignalFromRow(row));
   }
   return result;
 }

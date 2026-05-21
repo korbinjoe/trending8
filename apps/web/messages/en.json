@@ -60,9 +60,12 @@
     "featured": "Featured",
     "posted": "Posted",
     "cta": "View on Product Hunt",
+    "commentsShort": "{count} comments",
     "panelAttribution": "Launch metrics from Product Hunt. We do not host PH comments or voting.",
     "attribution": "Some cards show a PH badge when linked to a recent Product Hunt launch.",
-    "footer": "Launch signals may include data from Product Hunt."
+    "footer": "Launch signals may include data from Product Hunt.",
+    "githubLinked": "GitHub · {slug}",
+    "githubIndexed": "GitHub chart · {slug}"
   },
   "badge": {
     "shell": "Shell risk",
@@ -88,17 +91,20 @@
     "hintVelocity": "Sorted by absolute stars gained in the selected period",
     "hintEarly": "Top relative growth · total stars < 5k",
     "hintPh": "Sorted by Product Hunt upvotes in the selected launch window",
+    "hintPhLinked": "Only launches linked to a public GitHub repository",
     "phAttribution": "Launch metrics from Product Hunt. We do not host PH comments or voting."
   },
   "phFilter": {
-    "label": "GitHub linkage",
-    "all": "All launches",
-    "linked": "GitHub linked only"
+    "label": "GitHub repository",
+    "githubOnly": "GitHub repos only",
+    "legendGithub": "Linked to a public GitHub repo",
+    "legendGithubSample": "GitHub · owner/repo"
   },
   "launch": {
     "notIndexed": "Not indexed on this site yet",
     "productOnly": "No GitHub repo linked",
-    "website": "Website"
+    "website": "Website",
+    "websitePhLink": "Website (PH link)"
   },
   "health": {
     "active": "Active",
