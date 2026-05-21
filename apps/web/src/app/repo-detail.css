@@ -270,6 +270,21 @@
   margin-bottom: 0;
 }
 
+.readme-panel__footer {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  font-size: 0.85rem;
+}
+
+.readme-panel__footer a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.readme-panel__footer a:hover {
+  text-decoration: underline;
+}
+
 .panel code {
   font-family: var(--font-mono);
   font-size: 0.85rem;

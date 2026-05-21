@@ -154,8 +154,8 @@
     },
     "readme": {
       "title": "README preview",
-      "note": "… full README loaded via GitHub API in production",
-      "empty": "No description available yet."
+      "viewFull": "View full README on GitHub",
+      "empty": "README preview is not available right now."
     }
   },
   "compare": {

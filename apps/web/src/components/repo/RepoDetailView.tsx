@@ -8,6 +8,7 @@ import { PhDetailPanel } from "@/components/ph/PhDetailPanel";
 interface RepoDetailViewProps {
   detail: RepoDetail;
   locale: string;
+  readmePreview: string[] | null;
 }
 
 function trustDotClass(health: RepoDetail["health"]): string {
@@ -21,7 +22,11 @@ function licenseLabel(license: string | null, t: Awaited<ReturnType<typeof getTr
   return t("repo.trust.licenseVal", { license });
 }
 
-export async function RepoDetailView({ detail, locale }: RepoDetailViewProps) {
+export async function RepoDetailView({
+  detail,
+  locale,
+  readmePreview,
+}: RepoDetailViewProps) {
   const t = await getTranslations();
   const phT = await getTranslations("ph");
 
@@ -55,11 +60,7 @@ export async function RepoDetailView({ detail, locale }: RepoDetailViewProps) {
         ? "repo.trust.busFair"
         : "repo.trust.busLow";
 
-  const readmeParagraphs = detail.description
-    .split(/\n\n+/)
-    .map((p) => p.trim())
-    .filter(Boolean)
-    .slice(0, 2);
+  const readmeUrl = `${detail.urls.github}#readme`;
 
   return (
     <>
@@ -213,14 +214,18 @@ export async function RepoDetailView({ detail, locale }: RepoDetailViewProps) {
 
       <section className="panel">
         <h2 className="panel__title">{t("repo.readme.title")}</h2>
-        {readmeParagraphs.length > 0 ? (
-          readmeParagraphs.map((para) => (
-            <p key={para.slice(0, 40)}>{para}</p>
+        {readmePreview && readmePreview.length > 0 ? (
+          readmePreview.map((para) => (
+            <p key={para.slice(0, 48)}>{para}</p>
           ))
         ) : (
-          <p>{detail.description || t("repo.readme.empty")}</p>
+          <p>{t("repo.readme.empty")}</p>
         )}
-        <p>{t("repo.readme.note")}</p>
+        <p className="readme-panel__footer">
+          <a href={readmeUrl} target="_blank" rel="noopener noreferrer">
+            {t("repo.readme.viewFull")}
+          </a>
+        </p>
       </section>
     </>
   );

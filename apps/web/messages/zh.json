@@ -154,8 +154,8 @@
     },
     "readme": {
       "title": "README 预览",
-      "note": "… 生产环境将通过 GitHub API 加载完整 README",
-      "empty": "暂无项目描述。"
+      "viewFull": "在 GitHub 查看完整 README",
+      "empty": "暂时无法加载 README 预览。"
     }
   },
   "compare": {
