@@ -2,7 +2,7 @@
 
 import { ChartModal } from "@/components/chart/ChartModal";
 import { FavoriteButton } from "@/components/favorites/FavoriteButton";
-import { Link, useRouter } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import type { FeedItem } from "@github-trending/core/types";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
