@@ -7,7 +7,8 @@
     "subscribe": "S'abonner",
     "favorites": "Favoris",
     "search": "Rechercher",
-    "about": "À propos"
+    "about": "À propos",
+    "github": "GitHub"
   },
   "search": {
     "title": "Rechercher des dépôts indexés",
@@ -141,6 +142,7 @@
   "footer": {
     "unofficial": "Non officiel — non affilié à GitHub, Inc.",
     "data": "Données de l'API GitHub",
+    "source": "Open source — voir sur <sourceLink>GitHub</sourceLink>",
     "ph": "Les signaux de lancement peuvent inclure des données de <phLink>Product Hunt</phLink>"
   },
   "repo": {

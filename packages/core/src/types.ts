@@ -137,6 +137,8 @@ export const PhFeedResponseSchema = z.object({
   items: z.array(PhFeedEntrySchema),
   nextCursor: z.string().nullable(),
   updatedAt: z.string().nullable(),
+  /** Posts in DB matching period + filters (before card-level exclusions). */
+  eligibleTotal: z.number().int().nonnegative().optional(),
 });
 
 export const PhLaunchLinkageSchema = z.enum(["indexed", "launch", "product"]);

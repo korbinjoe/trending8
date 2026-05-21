@@ -17,11 +17,11 @@ import type { ParsedFeedParams } from "@/lib/feed-params";
 import {
   feedHideShellsParser,
   feedLangParser,
-  feedPeriodParser,
   feedPhGithubParser,
   feedTopicParser,
   feedViewParser,
 } from "@/lib/feed-query-nuqs";
+import { useEffectiveFeedPeriod } from "@/lib/use-effective-feed-period";
 import type {
   FeedItem,
   FeedResponse,
@@ -72,7 +72,7 @@ export function FeedListClient({
   const { setIsLoading: setGlobalFeedLoading } = useFeedLoading();
 
   const [view] = useQueryState("view", feedViewParser);
-  const [period] = useQueryState("period", feedPeriodParser);
+  const { period } = useEffectiveFeedPeriod();
   const [lang] = useQueryState("lang", feedLangParser);
   const [topic] = useQueryState("topic", feedTopicParser);
   const [hideShells] = useQueryState("hideShells", feedHideShellsParser);
@@ -103,7 +103,6 @@ export function FeedListClient({
   const skipFilterFetchRef = useRef(true);
   const fetchGenRef = useRef(0);
   const githubCacheRef = useRef(new Map<string, FeedResponse>());
-  const phCacheRef = useRef(new Map<string, PhFeedResponse>());
   const sectionRef = useRef<HTMLElement>(null);
 
   const [githubItems, setGithubItems] = useState<FeedItem[]>(
@@ -121,13 +120,16 @@ export function FeedListClient({
   const [filterLoading, setFilterLoading] = useState(false);
   const [overlayMinHeight, setOverlayMinHeight] = useState<number | undefined>();
   const [error, setError] = useState<string | null>(null);
+  const [phEligibleTotal, setPhEligibleTotal] = useState<number | null>(null);
 
   // Seed cache once from SSR props only — do not re-run when paramsKey changes or
   // initialPhFeed would overwrite filtered results (e.g. phGithub=linked).
   useEffect(() => {
     const key = feedParamsKey(feedParamsRef.current);
     if (isPhView && initialPhFeed) {
-      phCacheRef.current.set(key, initialPhFeed);
+      if (typeof initialPhFeed.eligibleTotal === "number") {
+        setPhEligibleTotal(initialPhFeed.eligibleTotal);
+      }
     } else if (!isPhView && initialFeed) {
       githubCacheRef.current.set(key, initialFeed);
     }
@@ -145,15 +147,7 @@ export function FeedListClient({
 
       if (!isPagination) {
         if (options?.fromFilter) {
-          const phCache = ph ? phCacheRef.current.get(key) : undefined;
           const ghCache = ph ? undefined : githubCacheRef.current.get(key);
-          if (ph && phCache) {
-            setPhItems(phCache.items ?? []);
-            setCursor(phCache.nextCursor ?? null);
-            setFilterLoading(false);
-            setGlobalFeedLoading(false);
-            return;
-          }
           if (!ph && ghCache) {
             setGithubItems(ghCache.items ?? []);
             setCursor(ghCache.nextCursor ?? null);
@@ -195,11 +189,9 @@ export function FeedListClient({
           if (!isPagination) {
             setPhItems(pageItems);
             setCursor(data.nextCursor ?? null);
-            phCacheRef.current.set(key, {
-              items: pageItems,
-              nextCursor: data.nextCursor ?? null,
-              updatedAt: data.updatedAt ?? null,
-            });
+            setPhEligibleTotal(
+              typeof data.eligibleTotal === "number" ? data.eligibleTotal : null,
+            );
           } else {
             setPhItems((prev) => [...prev, ...pageItems]);
             setCursor(data.nextCursor ?? null);
@@ -293,6 +285,11 @@ export function FeedListClient({
 
   return (
     <section ref={sectionRef} className="feed-section" aria-live="polite">
+      {isPhView && phEligibleTotal !== null && !filterLoading && (
+        <p className="ph-feed-scope tab-hint">
+          {feedT("phScope", { count: phEligibleTotal })}
+        </p>
+      )}
       {filterLoading && (
         <FeedLoadingOverlay minHeight={overlayMinHeight} />
       )}

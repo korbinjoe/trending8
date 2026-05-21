@@ -7,7 +7,8 @@
     "subscribe": "Subscribe",
     "favorites": "Favorites",
     "search": "Search",
-    "about": "About"
+    "about": "About",
+    "github": "GitHub"
   },
   "search": {
     "title": "Search indexed repositories",
@@ -76,6 +77,7 @@
     "compare": "Compare"
   },
   "feed": {
+    "phScope": "{count} launches in this period (top 24 by votes shown)",
     "loadMore": "Load more",
     "loading": "Loading rankings",
     "loadingMore": "Loading…",
@@ -141,6 +143,7 @@
   "footer": {
     "unofficial": "Unofficial — not affiliated with GitHub, Inc.",
     "data": "Data from GitHub API",
+    "source": "Open source — view on <sourceLink>GitHub</sourceLink>",
     "ph": "Launch signals may include data from <phLink>Product Hunt</phLink>"
   },
   "repo": {

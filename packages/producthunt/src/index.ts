@@ -5,8 +5,12 @@ export {
 } from "./auth";
 export { ProductHuntConfigError, ProductHuntRateLimitError } from "./errors";
 export { phGraphql } from "./client";
-export type { PhPostNode, PhProductLinkNode } from "./posts";
-export { fetchRecentPosts, fetchAllRecentPosts, fetchPostByGithubUrl } from "./posts";
+export type { PhPostNode, PhProductLinkNode, PhPostsOrder } from "./posts";
+export {
+  fetchRecentPosts,
+  fetchAllRecentPosts,
+  fetchPostByGithubUrl,
+} from "./posts";
 export {
   extractGithubFromText,
   extractGithubFromProductLinks,
@@ -25,6 +29,16 @@ export {
 } from "./linking";
 export type { LinkResult, MatchedVia } from "./linking";
 export { backfillPostsByGithubUrl } from "./backfill";
+export {
+  runPhHistoryBackfill,
+  getPhPostCoverageDays,
+} from "./backfill-history";
+export type {
+  PhHistoryBackfillOptions,
+  PhHistoryBackfillResult,
+} from "./backfill-history";
+export { buildPhBackfillWindows, utcDaysAgo } from "./backfill-windows";
+export type { PhBackfillWindow } from "./backfill-windows";
 export { runPhIngest, defaultPhIngestLogger } from "./ingest";
 export type { PhIngestResult, PhIngestLogger } from "./ingest";
 export {
@@ -42,6 +56,7 @@ export {
 } from "./ph-signal-map";
 export type { PhPostRow } from "./ph-signal-map";
 export {
+  countPhLeaderboardPosts,
   getPhLeaderboardPosts,
   type PhLeaderboardRow,
   type PhLeaderboardQuery,

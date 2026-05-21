@@ -19,15 +19,14 @@ export const feedPhGithubParser = parseAsStringEnum(["all", "linked"] as const)
   .withDefault("all")
   .withOptions(clientQuery);
 
+/** No default — use `parseFeedPeriod(period, view)` for the effective period. */
 export const feedPeriodParser = parseAsStringEnum([
   "today",
   "week",
   "month",
   "halfYear",
   "year",
-] as const)
-  .withDefault("today")
-  .withOptions(clientQuery);
+] as const).withOptions(clientQuery);
 
 export const feedLangParser = parseAsString
   .withDefault("")

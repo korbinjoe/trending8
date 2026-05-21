@@ -1,3 +1,10 @@
+/** Canonical open-source repository for this site (not a ranked repo slug). */
+export const PROJECT_GITHUB_REPO = "korbinzhao/github-trending-plus" as const;
+
+export function projectGithubUrl(): string {
+  return `https://github.com/${PROJECT_GITHUB_REPO}`;
+}
+
 export function getSiteUrl(): string {
   const raw = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   return raw.replace(/\/$/, "");

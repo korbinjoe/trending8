@@ -5,6 +5,7 @@ import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { HeaderSearch } from "@/components/search/HeaderSearch";
+import { GithubNavLink } from "./GithubNavLink";
 import { LogoMark } from "./LogoMark";
 
 function navLinkClass(pathname: string, href: string): string {
@@ -46,6 +47,7 @@ export function Header() {
             {t("about")}
           </Link>
         </nav>
+        <GithubNavLink />
         <select
           id="ui-locale"
           className="lang-select"

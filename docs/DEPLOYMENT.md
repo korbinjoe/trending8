@@ -132,6 +132,10 @@ Vercel → Project → Settings → Environment Variables (**Production** and **
 | `PH_INGEST_LOOKBACK_DAYS` | Optional | Default `7` |
 | `PH_INGEST_TOPICS` | Optional | Default `developer-tools,open-source` |
 | `PH_INGEST_PAGE_SIZE` | Optional | Default `50` |
+| `PH_BACKFILL_LOOKBACK_DAYS` | Optional | One-time history backfill; default `365` |
+| `PH_BACKFILL_CHUNK_DAYS` | Optional | API window size; default `30` |
+| `PH_BACKFILL_MAX_PAGES` | Optional | Max pages per window/topic; default `40` |
+| `PH_BACKFILL_REQUEST_DELAY_MS` | Optional | Delay between pages/windows; default `400` |
 
 Same list in `.env.example` and `apps/web/README.md`.
 
@@ -195,7 +199,29 @@ pnpm --filter @github-trending/github backfill:star-daily --force --ranking
 - **New repos:** after first appearing in `repositories`, run `backfill:star-daily` once or long-period baselines may be missing.
 - Repo detail supports `?period=week|month|halfYear|year`, aligned with the home feed.
 
-### 4.1 Legacy 4-anchor backfill (deprecated)
+### 4.2 One-time Product Hunt history backfill
+
+Daily `ph-ingest` only keeps a short rolling window (`PH_INGEST_LOOKBACK_DAYS`, default **7**). For `month` / `halfYear` / `year` on `?view=ph`, run a **one-time** history backfill into `product_hunt_posts` (uses PH `postedAfter` + `postedBefore` windows and `order: NEWEST`).
+
+```bash
+# Local; DATABASE_URL + PRODUCTHUNT_* point at target DB
+pnpm ph-backfill:once
+
+# Force re-fetch even if DB already spans the lookback
+pnpm ph-backfill:once --force
+
+# Shorter trial (90 days, slower pacing)
+pnpm --filter @github-trending/producthunt ph-backfill:once --lookback-days 90 --delay-ms 800
+```
+
+**Notes:**
+
+- Default lookback **365** days, **30**-day API windows, topics from `PH_INGEST_TOPICS`.
+- Skips when oldest `posted_at` already covers the lookback (within 2 days); use `--force` to rerun.
+- Respect PH rate limits; increase `--delay-ms` if you hit 429s.
+- After backfill, redeploy or call ingest cron so Next.js `ph-feed` cache revalidates; daily `ph-ingest` maintains the recent tail.
+
+### 4.3 Legacy 4-anchor backfill (deprecated)
 
 These wrote 7/30/180/365-day anchors to `repository_snapshots` — **use** `backfill:star-daily` instead:
 

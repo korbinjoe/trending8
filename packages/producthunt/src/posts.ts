@@ -49,13 +49,23 @@ interface PhPostApiNode {
   topics: { edges: Array<{ node: { slug: string; name: string } }> };
 }
 
+export type PhPostsOrder = "VOTES" | "NEWEST" | "RANKING" | "FEATURED_AT";
+
 const RECENT_POSTS_QUERY = `
-  query PhRecentPosts($postedAfter: DateTime!, $topic: String, $first: Int!, $after: String) {
+  query PhRecentPosts(
+    $postedAfter: DateTime!
+    $postedBefore: DateTime
+    $topic: String
+    $first: Int!
+    $after: String
+    $order: PostsOrder
+  ) {
     posts(
       first: $first
       postedAfter: $postedAfter
+      postedBefore: $postedBefore
       topic: $topic
-      order: VOTES
+      order: $order
       after: $after
     ) {
       edges {
@@ -147,9 +157,11 @@ function mapNode(node: PhPostApiNode): PhPostNode {
 
 export interface FetchRecentPostsParams {
   postedAfter: string;
+  postedBefore?: string;
   topic?: string;
   first: number;
   after?: string | null;
+  order?: PhPostsOrder;
 }
 
 export async function fetchRecentPosts(
@@ -160,9 +172,11 @@ export async function fetchRecentPosts(
     RECENT_POSTS_QUERY,
     {
       postedAfter: params.postedAfter,
+      postedBefore: params.postedBefore ?? null,
       topic: params.topic ?? null,
       first: params.first,
       after: params.after ?? null,
+      order: params.order ?? "VOTES",
     },
     logger,
   );
@@ -176,18 +190,29 @@ export async function fetchRecentPosts(
   };
 }
 
+export interface FetchAllRecentPostsOptions {
+  maxPages?: number;
+  delayMs?: number;
+}
+
 export async function fetchAllRecentPosts(
   params: Omit<FetchRecentPostsParams, "after">,
   logger?: { warn: (msg: string, meta?: Record<string, unknown>) => void },
+  options?: FetchAllRecentPostsOptions,
 ): Promise<PhPostNode[]> {
+  const maxPages = options?.maxPages ?? 10;
+  const delayMs = options?.delayMs ?? 0;
   const all: PhPostNode[] = [];
   let after: string | null = null;
 
-  for (let page = 0; page < 10; page++) {
+  for (let page = 0; page < maxPages; page++) {
     const batch = await fetchRecentPosts({ ...params, after }, logger);
     all.push(...batch.posts);
     if (!batch.nextCursor) break;
     after = batch.nextCursor;
+    if (delayMs > 0) {
+      await new Promise((r) => setTimeout(r, delayMs));
+    }
   }
 
   return all;

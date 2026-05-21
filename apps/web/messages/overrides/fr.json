@@ -141,6 +141,7 @@
   "footer": {
     "unofficial": "Non officiel — non affilié à GitHub, Inc.",
     "data": "Données de l'API GitHub",
+    "source": "Open source — voir sur <sourceLink>GitHub</sourceLink>",
     "ph": "Les signaux de lancement peuvent inclure des données de <phLink>Product Hunt</phLink>"
   },
   "repo": {

@@ -7,10 +7,10 @@ import { TopicFilterChips } from "@/components/feed/TopicFilterChips";
 import {
   feedHideShellsParser,
   feedLangParser,
-  feedPeriodParser,
   feedPhGithubParser,
   feedViewParser,
 } from "@/lib/feed-query-nuqs";
+import { useEffectiveFeedPeriod } from "@/lib/use-effective-feed-period";
 import { useQueryState } from "nuqs";
 
 const PERIODS = ["today", "week", "month", "halfYear", "year"] as const;
@@ -37,7 +37,7 @@ export function FilterBar({ topicFilters }: FilterBarProps) {
   const { isLoading: feedLoading } = useFeedLoading();
 
   const [view, setView] = useQueryState("view", feedViewParser);
-  const [period, setPeriod] = useQueryState("period", feedPeriodParser);
+  const { period, setPeriod } = useEffectiveFeedPeriod();
   const [lang, setLang] = useQueryState("lang", feedLangParser);
   const [hideShells, setHideShells] = useQueryState(
     "hideShells",

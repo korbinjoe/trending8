@@ -141,6 +141,7 @@
   "footer": {
     "unofficial": "अनौपचारिक — GitHub, Inc. से संबद्ध नहीं।",
     "data": "डेटा GitHub API से",
+    "source": "ओपन सोर्स — <sourceLink>GitHub</sourceLink> पर देखें",
     "ph": "लॉन्च सिग्नल में <phLink>Product Hunt</phLink> डेटा शामिल हो सकता है"
   },
   "repo": {

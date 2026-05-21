@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --max-warnings 0",
     "test": "vitest run",
-    "ph-ingest:once": "tsx src/cli-ph-ingest.ts"
+    "ph-ingest:once": "tsx src/cli-ph-ingest.ts",
+    "ph-backfill:once": "tsx src/cli-ph-backfill.ts"
   },
   "dependencies": {
     "@github-trending/core": "workspace:*",

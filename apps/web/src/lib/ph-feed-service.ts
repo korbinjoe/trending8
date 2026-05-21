@@ -12,7 +12,10 @@ import { periodStart, shouldExclude } from "@github-trending/core";
 import { getAlternativesForRepos } from "@github-trending/github";
 import { classifyPhEntryKind } from "@/lib/ph-feed-kind";
 import { buildPhSignalFromRow } from "@/lib/ph-feed-meta";
-import { getPhLeaderboardPosts } from "@github-trending/producthunt";
+import {
+  countPhLeaderboardPosts,
+  getPhLeaderboardPosts,
+} from "@github-trending/producthunt";
 import { getDb } from "@github-trending/db";
 import { periodMetrics, productHuntPosts, repositories } from "@github-trending/db";
 import { and, desc, eq, inArray } from "drizzle-orm";
@@ -38,13 +41,18 @@ export async function getPhFeed(params: {
   const db = getDb();
   const offset = params.cursor ? Number.parseInt(params.cursor, 10) : 0;
 
-  const { rows, nextCursor } = await getPhLeaderboardPosts(db, {
+  const queryBase = {
     postedAfter,
     phGithub,
     topic: params.topic,
-    cursor: offset,
-    limit: PAGE_SIZE,
-  });
+  };
+
+  const [{ rows, nextCursor }, eligibleTotal] = await Promise.all([
+    getPhLeaderboardPosts(db, { ...queryBase, cursor: offset, limit: PAGE_SIZE }),
+    offset === 0
+      ? countPhLeaderboardPosts(db, queryBase)
+      : Promise.resolve(undefined),
+  ]);
 
   const repoIds = rows
     .map((r) => r.repoId)
@@ -169,5 +177,6 @@ export async function getPhFeed(params: {
     items: entries,
     nextCursor,
     updatedAt: toIsoString(phUpdated[0]?.updatedAt),
+    ...(eligibleTotal !== undefined ? { eligibleTotal } : {}),
   };
 }

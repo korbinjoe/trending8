@@ -5,12 +5,10 @@ import {
   getIngestTopics,
   getLookbackDays,
   getPageSize,
-  MAX_REDIRECT_RESOLVES_PER_BATCH,
   postedAfterDate,
 } from "./config";
+import { processPhPosts } from "./ingest-batch";
 import { fetchAllRecentPosts } from "./posts";
-import { resolvePostGithubLink, upsertProductHuntPost } from "./linking";
-import { hasGithubProductLink } from "./product-link-resolve";
 
 export interface PhIngestLogger {
   info: (msg: string, meta?: Record<string, unknown>) => void;
@@ -29,20 +27,6 @@ export interface PhIngestResult {
   postsUpserted: number;
   linkedCount: number;
   errors: number;
-}
-
-async function logPhError(
-  db: Database,
-  message: string,
-  slug?: string,
-): Promise<void> {
-  const [owner, name] = slug?.split("/") ?? [null, null];
-  await db.insert(ingestErrors).values({
-    owner: owner ?? null,
-    name: name ?? null,
-    message,
-    source: "producthunt",
-  });
 }
 
 export async function runPhIngest(options?: {
@@ -65,7 +49,6 @@ export async function runPhIngest(options?: {
   let postsUpserted = 0;
   let linkedCount = 0;
   let errors = 0;
-  let redirectResolves = 0;
 
   logger.info("ph_ingest_start", { lookbackDays, topics, pageSize });
 
@@ -83,36 +66,19 @@ export async function runPhIngest(options?: {
         count: posts.length,
       });
 
-      for (const post of posts) {
-        try {
-          const needsRedirectResolve =
-            Boolean(post.website) || hasGithubProductLink(post.productLinks);
-          const skipRedirect =
-            needsRedirectResolve &&
-            redirectResolves >= MAX_REDIRECT_RESOLVES_PER_BATCH;
-          const link = await resolvePostGithubLink(db, post, {
-            skipRedirect,
-            logger,
-          });
-
-          if (needsRedirectResolve && !skipRedirect) {
-            redirectResolves += 1;
-          }
-
-          await upsertProductHuntPost(db, post, link);
-          postsUpserted += 1;
-          if (link.repoId) linkedCount += 1;
-        } catch (err) {
-          errors += 1;
-          const msg = err instanceof Error ? err.message : String(err);
-          await logPhError(db, msg, post.slug);
-          logger.error("ph_post_failed", { slug: post.slug, reason: msg });
-        }
-      }
+      const batch = await processPhPosts(db, posts, logger);
+      postsUpserted += batch.postsUpserted;
+      linkedCount += batch.linkedCount;
+      errors += batch.errors;
     } catch (err) {
       errors += 1;
       const msg = err instanceof Error ? err.message : String(err);
-      await logPhError(db, msg, topic);
+      await db.insert(ingestErrors).values({
+        owner: null,
+        name: null,
+        message: msg,
+        source: "producthunt",
+      });
       logger.error("ph_topic_batch_failed", { topic: topic ?? "all", reason: msg });
     }
   }

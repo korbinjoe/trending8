@@ -141,6 +141,7 @@
   "footer": {
     "unofficial": "非公式 — GitHub, Inc. とは無関係です。",
     "data": "データは GitHub API 由来",
+    "source": "オープンソース — <sourceLink>GitHub</sourceLink> で公開",
     "ph": "ローンチシグナルには <phLink>Product Hunt</phLink> のデータが含まれる場合があります"
   },
   "repo": {

@@ -7,7 +7,8 @@
     "subscribe": "اشتراك",
     "favorites": "المفضلة",
     "search": "بحث",
-    "about": "حول"
+    "about": "حول",
+    "github": "GitHub"
   },
   "search": {
     "title": "البحث في المستودعات المفهرسة",
@@ -141,6 +142,7 @@
   "footer": {
     "unofficial": "غير رسمي — غير تابع لـ GitHub, Inc.",
     "data": "البيانات من GitHub API",
+    "source": "مفتوح المصدر — اعرض على <sourceLink>GitHub</sourceLink>",
     "ph": "قد تتضمن إشارات الإطلاق بيانات من <phLink>Product Hunt</phLink>"
   },
   "repo": {

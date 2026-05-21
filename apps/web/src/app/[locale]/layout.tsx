@@ -39,10 +39,16 @@ export default async function LocaleLayout({
     <NextIntlClientProvider locale={locale} messages={messages}>
       <DocumentLang />
       <NuqsAdapter>
-        <div dir={dir} className={`wrap${localeClass ? ` ${localeClass}` : ""}`}>
-          <Header />
-          <main className="page-main">{children}</main>
-          <Footer />
+        <div dir={dir} className={localeClass || undefined}>
+          <div className="site-header-sticky">
+            <div className="wrap site-header-sticky__inner">
+              <Header />
+            </div>
+          </div>
+          <div className="wrap">
+            <main className="page-main">{children}</main>
+            <Footer />
+          </div>
         </div>
       </NuqsAdapter>
     </NextIntlClientProvider>

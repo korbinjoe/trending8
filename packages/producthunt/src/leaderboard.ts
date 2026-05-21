@@ -20,6 +20,34 @@ export interface PhLeaderboardPage {
   nextCursor: string | null;
 }
 
+export async function countPhLeaderboardPosts(
+  db: Database,
+  query: Omit<PhLeaderboardQuery, "cursor" | "limit">,
+): Promise<number> {
+  const conditions = [gte(productHuntPosts.postedAt, query.postedAfter)];
+
+  if (query.phGithub === "linked") {
+    conditions.push(isNotNull(productHuntPosts.githubOwner));
+  }
+
+  if (query.topic) {
+    const topicLower = query.topic.toLowerCase();
+    conditions.push(
+      sql`EXISTS (
+        SELECT 1 FROM jsonb_array_elements_text(${productHuntPosts.topics}) AS elem
+        WHERE lower(elem::text) = ${topicLower}
+      )`,
+    );
+  }
+
+  const [row] = await db
+    .select({ cnt: sql<number>`count(*)::int` })
+    .from(productHuntPosts)
+    .where(and(...conditions));
+
+  return row?.cnt ?? 0;
+}
+
 export async function getPhLeaderboardPosts(
   db: Database,
   query: PhLeaderboardQuery,
