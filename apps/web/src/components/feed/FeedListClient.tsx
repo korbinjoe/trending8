@@ -148,11 +148,12 @@ export function FeedListClient({ initialFeed }: FeedListClientProps) {
         if (!isPagination) setItems([]);
         setCursor(null);
       } finally {
-        if (generation !== fetchGenRef.current) return;
-        setLoading(false);
-        setFilterLoading(false);
-        setOverlayMinHeight(undefined);
-        setGlobalFeedLoading(false);
+        if (generation === fetchGenRef.current) {
+          setLoading(false);
+          setFilterLoading(false);
+          setOverlayMinHeight(undefined);
+          setGlobalFeedLoading(false);
+        }
       }
     },
     [feedT, setGlobalFeedLoading],
