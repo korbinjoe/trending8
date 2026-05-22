@@ -4,6 +4,7 @@ import { FeedListSkeleton } from "@/components/feed/FeedListSkeleton";
 import { useFeedLoading } from "@/components/feed/FeedLoadingContext";
 import { FeedLoadingOverlay } from "@/components/feed/FeedLoadingOverlay";
 import { PhFeedEmpty } from "@/components/feed/PhFeedEmpty";
+import { PhIndexedCard } from "@/components/feed/PhIndexedCard";
 import { PhLaunchCard } from "@/components/feed/PhLaunchCard";
 import { PhProductCard } from "@/components/feed/PhProductCard";
 import { RankCard } from "@/components/feed/RankCard";
@@ -302,7 +303,7 @@ export function FeedListClient({
             ? phItems.map((entry) => {
                 if (entry.kind === "repo") {
                   return (
-                    <RankCard
+                    <PhIndexedCard
                       key={phEntryKey(entry)}
                       item={entry.item}
                     />

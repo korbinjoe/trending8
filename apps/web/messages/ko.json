@@ -83,7 +83,8 @@
     "switching": "랭킹 업데이트 중…",
     "error": "랭킹을 불러올 수 없습니다. 다시 시도하세요.",
     "phEmpty": "이 기간에 Product Hunt 출시가 아직 없습니다. PH ingest를 실행하거나 기간을 넓히세요.",
-    "phEmptyLinked": "이 기간에 GitHub 연결 출시가 없습니다.「모든 출시」또는 더 짧은 기간을 시도하세요."
+    "phEmptyLinked": "이 기간에 GitHub 연결 출시가 없습니다.「모든 출시」또는 더 짧은 기간을 시도하세요.",
+    "phScope": "{count} launches in this period (top 24 by votes shown)"
   },
   "tab": {
     "velocity": "Velocity",
@@ -209,16 +210,16 @@
   },
   "favorites": {
     "title": "내 즐겨찾기",
-    "subtitle": "이 기기에 저장된 저장소 — 최신순. 이 페이지를 열면 지표가 새로고침됩니다.",
+    "subtitle": "Repos and Product Hunt launches saved on this device — newest first. Metrics refresh when you open this page.",
     "save": "저장",
     "saved": "저장됨",
     "remove": "제거",
-    "clearAll": "모두 지우기",
+    "clearAll": "Clear all",
     "confirmClear": "지우기 확인",
     "cancelClear": "취소",
-    "count": "{n}개 저장 · 최대 200",
+    "count": "{n} repos · max 200",
     "emptyTitle": "아직 저장된 항목 없음",
-    "emptyBody": "Velocity 차트나 저장소 상세에서 저장 — 다음 방문 때 여기서 이어 보세요.",
+    "emptyBody": "Save repos from the trending feed or repository detail, and PH launches from the Product Hunt tab or launch pages.",
     "emptyCta": "트렌딩 둘러보기",
     "privacyNote": "로컬 전용: 즐겨찾기는 이 브라우저에 저장됩니다. 사이트 데이터 삭제나 기기 변경 시 사라집니다.",
     "savedAt": "{date}에 저장",
@@ -230,7 +231,19 @@
     "ariaRemove": "{repo} 즐겨찾기에서 제거",
     "loading": "불러오는 중…",
     "listLabel": "저장된 저장소",
-    "hydrateWarning": "실시간 지표를 새로고침할 수 없습니다. 저장된 스냅샷을 표시 중."
+    "hydrateWarning": "실시간 지표를 새로고침할 수 없습니다. 저장된 스냅샷을 표시 중.",
+    "phSectionTitle": "Product Hunt launches",
+    "phCount": "{n} launches · max 200",
+    "phListLabel": "Saved Product Hunt launches",
+    "phAriaSave": "Save {name} to favorites",
+    "phAriaRemove": "Remove {name} from favorites",
+    "phLimitReached": "You've reached the 200 launch limit. Remove some items first.",
+    "phHydrateWarning": "Could not refresh launch data. Showing saved snapshots.",
+    "phNotFound": "No longer in our index",
+    "phNotFoundHint": "This launch may have been removed from our feed.",
+    "phClearAll": "Clear PH launches",
+    "phIndexedAriaSave": "Save {name} and {repo} to favorites",
+    "phIndexedAriaRemove": "Remove {name} and {repo} from favorites"
   },
   "about": {
     "title": "소개",

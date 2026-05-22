@@ -83,7 +83,8 @@
     "switching": "Обновление рейтингов…",
     "error": "Не удалось загрузить рейтинги. Попробуйте снова.",
     "phEmpty": "В этом окне пока нет запусков Product Hunt. Запустите PH ingest или расширьте период.",
-    "phEmptyLinked": "Нет запусков со связью с GitHub в этом окне. Попробуйте「Все запуски」или более короткий период."
+    "phEmptyLinked": "Нет запусков со связью с GitHub в этом окне. Попробуйте「Все запуски」или более короткий период.",
+    "phScope": "{count} launches in this period (top 24 by votes shown)"
   },
   "tab": {
     "velocity": "Velocity",
@@ -209,16 +210,16 @@
   },
   "favorites": {
     "title": "Ваше избранное",
-    "subtitle": "Репо, сохранённые на этом устройстве — сначала новые. Метрики обновляются при открытии страницы.",
+    "subtitle": "Repos and Product Hunt launches saved on this device — newest first. Metrics refresh when you open this page.",
     "save": "Сохранить",
     "saved": "Сохранено",
     "remove": "Удалить",
-    "clearAll": "Очистить всё",
+    "clearAll": "Clear all",
     "confirmClear": "Подтвердить очистку",
     "cancelClear": "Отмена",
-    "count": "{n} сохранено · макс. 200",
+    "count": "{n} repos · max 200",
     "emptyTitle": "Пока ничего не сохранено",
-    "emptyBody": "Сохраняйте репо из рейтинга velocity или страницы репозитория — они останутся здесь.",
+    "emptyBody": "Save repos from the trending feed or repository detail, and PH launches from the Product Hunt tab or launch pages.",
     "emptyCta": "Смотреть тренды",
     "privacyNote": "Только локально: избранное хранится в этом браузере. Очистка данных сайта или смена устройства удалит их.",
     "savedAt": "Сохранено {date}",
@@ -230,7 +231,19 @@
     "ariaRemove": "Удалить {repo} из избранного",
     "loading": "Загрузка…",
     "listLabel": "Сохранённые репозитории",
-    "hydrateWarning": "Не удалось обновить живые метрики. Показаны сохранённые снимки."
+    "hydrateWarning": "Не удалось обновить живые метрики. Показаны сохранённые снимки.",
+    "phSectionTitle": "Product Hunt launches",
+    "phCount": "{n} launches · max 200",
+    "phListLabel": "Saved Product Hunt launches",
+    "phAriaSave": "Save {name} to favorites",
+    "phAriaRemove": "Remove {name} from favorites",
+    "phLimitReached": "You've reached the 200 launch limit. Remove some items first.",
+    "phHydrateWarning": "Could not refresh launch data. Showing saved snapshots.",
+    "phNotFound": "No longer in our index",
+    "phNotFoundHint": "This launch may have been removed from our feed.",
+    "phClearAll": "Clear PH launches",
+    "phIndexedAriaSave": "Save {name} and {repo} to favorites",
+    "phIndexedAriaRemove": "Remove {name} and {repo} from favorites"
   },
   "about": {
     "title": "О проекте",

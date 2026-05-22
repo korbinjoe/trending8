@@ -1,11 +1,13 @@
 "use client";
 
+import { PhFavoriteButton } from "@/components/favorites/PhFavoriteButton";
 import type { PhSignal } from "@github-trending/core/types";
 import { phOutboundLinks } from "@github-trending/core/ph-signal-utils";
 import { useLocale, useTranslations } from "next-intl";
 
 interface PhDetailPanelProps {
   signal: PhSignal;
+  productName: string;
 }
 
 function formatFullDate(iso: string, locale: string): string {
@@ -21,7 +23,7 @@ function formatFullDate(iso: string, locale: string): string {
   }
 }
 
-export function PhDetailPanel({ signal }: PhDetailPanelProps) {
+export function PhDetailPanel({ signal, productName }: PhDetailPanelProps) {
   const t = useTranslations("ph");
   const launchT = useTranslations("launch");
   const ctaT = useTranslations("cta");
@@ -37,14 +39,25 @@ export function PhDetailPanel({ signal }: PhDetailPanelProps) {
           </span>
           {t("panelTitle")}
         </h2>
-        <a
-          className="btn btn--primary"
-          href={signal.phUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {t("cta")} ↗
-        </a>
+        <div className="ph-panel__head-actions">
+          <PhFavoriteButton
+            slug={signal.slug}
+            productName={productName}
+            snapshot={{
+              productName,
+              tagline: signal.tagline,
+              votesCount: signal.votesCount,
+            }}
+          />
+          <a
+            className="btn btn--primary"
+            href={signal.phUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t("cta")} ↗
+          </a>
+        </div>
       </div>
       {signal.tagline && <p className="ph-panel__tagline">{signal.tagline}</p>}
       {signal.description &&

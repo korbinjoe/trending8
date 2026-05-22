@@ -1,0 +1,7 @@
+export const LICENSE_TAGS = new Set([
+  "MIT",
+  "Apache-2.0",
+  "GPL-3.0",
+  "BSD-3-Clause",
+  "ISC",
+]);

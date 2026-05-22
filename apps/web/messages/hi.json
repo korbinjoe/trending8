@@ -83,7 +83,8 @@
     "switching": "रैंकिंग अपडेट हो रही…",
     "error": "रैंकिंग लोड नहीं हो सकी। फिर कोशिश करें।",
     "phEmpty": "इस विंडो में अभी Product Hunt लॉन्च नहीं। PH ingest चलाएँ या अवधि बढ़ाएँ।",
-    "phEmptyLinked": "इस विंडो में GitHub-लिंक्ड लॉन्च नहीं।「सभी लॉन्च」या छोटी अवधि आज़माएँ।"
+    "phEmptyLinked": "इस विंडो में GitHub-लिंक्ड लॉन्च नहीं।「सभी लॉन्च」या छोटी अवधि आज़माएँ।",
+    "phScope": "{count} launches in this period (top 24 by votes shown)"
   },
   "tab": {
     "velocity": "Velocity",
@@ -209,16 +210,16 @@
   },
   "favorites": {
     "title": "आपके पसंदीदा",
-    "subtitle": "इस डिवाइस पर सहेजे रिपो — नवीनतम पहले। इस पृष्ठ पर मेट्रिक रीफ़्रेश होती है।",
+    "subtitle": "Repos and Product Hunt launches saved on this device — newest first. Metrics refresh when you open this page.",
     "save": "सहेजें",
     "saved": "सहेजा",
     "remove": "हटाएँ",
-    "clearAll": "सब साफ़ करें",
+    "clearAll": "Clear all",
     "confirmClear": "साफ़ करने की पुष्टि",
     "cancelClear": "रद्द",
-    "count": "{n} सहेजे · अधिकतम 200",
+    "count": "{n} repos · max 200",
     "emptyTitle": "अभी कुछ सहेजा नहीं",
-    "emptyBody": "velocity चार्ट या रिपो विवरण से सहेजें — अगली बार यहीं से देखें।",
+    "emptyBody": "Save repos from the trending feed or repository detail, and PH launches from the Product Hunt tab or launch pages.",
     "emptyCta": "ट्रेंडिंग देखें",
     "privacyNote": "केवल स्थानीय: पसंदीदा इस ब्राउज़र में। साइट डेटा साफ़ या डिवाइस बदलने पर हट जाते हैं।",
     "savedAt": "{date} को सहेजा",
@@ -230,7 +231,19 @@
     "ariaRemove": "{repo} पसंदीदा से हटाएँ",
     "loading": "लोड हो रहा…",
     "listLabel": "सहेजे रिपॉज़िटरी",
-    "hydrateWarning": "लाइव मेट्रिक रीफ़्रेश नहीं हो सकी। सहेजे स्नैपशॉट दिखाए जा रहे।"
+    "hydrateWarning": "लाइव मेट्रिक रीफ़्रेश नहीं हो सकी। सहेजे स्नैपशॉट दिखाए जा रहे।",
+    "phSectionTitle": "Product Hunt launches",
+    "phCount": "{n} launches · max 200",
+    "phListLabel": "Saved Product Hunt launches",
+    "phAriaSave": "Save {name} to favorites",
+    "phAriaRemove": "Remove {name} from favorites",
+    "phLimitReached": "You've reached the 200 launch limit. Remove some items first.",
+    "phHydrateWarning": "Could not refresh launch data. Showing saved snapshots.",
+    "phNotFound": "No longer in our index",
+    "phNotFoundHint": "This launch may have been removed from our feed.",
+    "phClearAll": "Clear PH launches",
+    "phIndexedAriaSave": "Save {name} and {repo} to favorites",
+    "phIndexedAriaRemove": "Remove {name} and {repo} from favorites"
   },
   "about": {
     "title": "परिचय",

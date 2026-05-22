@@ -83,7 +83,8 @@
     "switching": "Rankings werden aktualisiert…",
     "error": "Rankings konnten nicht geladen werden. Erneut versuchen.",
     "phEmpty": "Noch keine Product Hunt Launches in diesem Fenster. PH ingest ausführen oder Zeitraum erweitern.",
-    "phEmptyLinked": "Keine GitHub-verknüpften Launches in diesem Fenster. Versuchen Sie「Alle Launches」oder einen kürzeren Zeitraum."
+    "phEmptyLinked": "Keine GitHub-verknüpften Launches in diesem Fenster. Versuchen Sie「Alle Launches」oder einen kürzeren Zeitraum.",
+    "phScope": "{count} launches in this period (top 24 by votes shown)"
   },
   "tab": {
     "velocity": "Velocity",
@@ -209,16 +210,16 @@
   },
   "favorites": {
     "title": "Ihre Favoriten",
-    "subtitle": "Auf diesem Gerät gespeicherte Repos — neueste zuerst. Metriken werden beim Öffnen dieser Seite aktualisiert.",
+    "subtitle": "Repos and Product Hunt launches saved on this device — newest first. Metrics refresh when you open this page.",
     "save": "Speichern",
     "saved": "Gespeichert",
     "remove": "Entfernen",
-    "clearAll": "Alle löschen",
+    "clearAll": "Clear all",
     "confirmClear": "Löschen bestätigen",
     "cancelClear": "Abbrechen",
-    "count": "{n} gespeichert · max. 200",
+    "count": "{n} repos · max 200",
     "emptyTitle": "Noch nichts gespeichert",
-    "emptyBody": "Repos aus dem Velocity-Ranking oder der Detailseite speichern — sie bleiben für Ihren nächsten Besuch hier.",
+    "emptyBody": "Save repos from the trending feed or repository detail, and PH launches from the Product Hunt tab or launch pages.",
     "emptyCta": "Trending durchsuchen",
     "privacyNote": "Nur lokal: Favoriten werden in diesem Browser gespeichert. Site-Daten löschen oder Gerät wechseln entfernt sie.",
     "savedAt": "Gespeichert {date}",
@@ -230,7 +231,19 @@
     "ariaRemove": "{repo} aus Favoriten entfernen",
     "loading": "Laden…",
     "listLabel": "Gespeicherte Repositories",
-    "hydrateWarning": "Live-Metriken konnten nicht aktualisiert werden. Gespeicherte Snapshots werden angezeigt."
+    "hydrateWarning": "Live-Metriken konnten nicht aktualisiert werden. Gespeicherte Snapshots werden angezeigt.",
+    "phSectionTitle": "Product Hunt launches",
+    "phCount": "{n} launches · max 200",
+    "phListLabel": "Saved Product Hunt launches",
+    "phAriaSave": "Save {name} to favorites",
+    "phAriaRemove": "Remove {name} from favorites",
+    "phLimitReached": "You've reached the 200 launch limit. Remove some items first.",
+    "phHydrateWarning": "Could not refresh launch data. Showing saved snapshots.",
+    "phNotFound": "No longer in our index",
+    "phNotFoundHint": "This launch may have been removed from our feed.",
+    "phClearAll": "Clear PH launches",
+    "phIndexedAriaSave": "Save {name} and {repo} to favorites",
+    "phIndexedAriaRemove": "Remove {name} and {repo} from favorites"
   },
   "about": {
     "title": "Über uns",

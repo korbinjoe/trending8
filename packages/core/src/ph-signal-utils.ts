@@ -41,3 +41,11 @@ export function phOutboundLinks(signal: PhSignal): {
     website: website || undefined,
   };
 }
+
+/** PH upvote metric styled like feed star velocity (+1,234 ↑). */
+export function formatPhVotesMetric(
+  votes: number,
+  locale = "en",
+): string {
+  return `+${votes.toLocaleString(locale)} ↑`;
+}

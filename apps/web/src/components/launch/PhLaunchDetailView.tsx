@@ -23,7 +23,7 @@ export async function PhLaunchDetailView({ detail }: PhLaunchDetailViewProps) {
 
       <h1 className="launch-detail__title">{detail.productName}</h1>
 
-      <PhDetailPanel signal={detail.signal} />
+      <PhDetailPanel signal={detail.signal} productName={detail.productName} />
 
       {detail.linkage === "indexed" && <IndexedRepoBridge detail={detail} />}
 

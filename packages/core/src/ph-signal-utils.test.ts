@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  formatPhVotesMetric,
   githubSlugFromUrl,
   isPhTrackingUrl,
   phOutboundLinks,
@@ -24,6 +25,13 @@ describe("phOutboundLinks", () => {
 describe("isPhTrackingUrl", () => {
   it("detects PH /r/ links", () => {
     expect(isPhTrackingUrl("https://www.producthunt.com/r/abc")).toBe(true);
+  });
+});
+
+describe("formatPhVotesMetric", () => {
+  it("formats votes like star delta", () => {
+    expect(formatPhVotesMetric(257, "en")).toBe("+257 ↑");
+    expect(formatPhVotesMetric(1234, "en")).toBe("+1,234 ↑");
   });
 });
 

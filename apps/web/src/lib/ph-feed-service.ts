@@ -152,6 +152,7 @@ export async function getPhFeed(params: {
         tags: topics.slice(0, 5),
         isEarlySignal: metric?.isEarlySignal === 1,
         phSignal,
+        phProductName: row.name,
         alternatives,
         compareUrl: slugs.length > 1 ? compareUrl(slugs) : undefined,
       };
@@ -161,16 +162,18 @@ export async function getPhFeed(params: {
       continue;
     }
 
-    if (kind === "launch" && row.githubOwner && row.githubName) {
+    if (kind === "launch") {
       const launch: PhLaunchItem = { rank, name: row.name, phSignal };
       entries.push({ kind: "launch", item: launch });
       rank += 1;
       continue;
     }
 
-    const product: PhProductItem = { rank, name: row.name, phSignal };
-    entries.push({ kind: "product", item: product });
-    rank += 1;
+    if (kind === "product") {
+      const product: PhProductItem = { rank, name: row.name, phSignal };
+      entries.push({ kind: "product", item: product });
+      rank += 1;
+    }
   }
 
   return {

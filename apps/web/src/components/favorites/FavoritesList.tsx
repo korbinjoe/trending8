@@ -12,6 +12,8 @@ import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import { HealthDot } from "@/components/feed/HealthDot";
 import { FavoriteButton } from "./FavoriteButton";
+import { PhFavoritesList } from "./PhFavoritesList";
+import { usePhFavorites } from "@/hooks/usePhFavorites";
 
 function formatSavedAt(iso: string, locale: string): string {
   try {
@@ -36,6 +38,10 @@ export function FavoritesList({ locale }: { locale: string }) {
   const t = useTranslations("favorites");
   const healthT = useTranslations("health");
   const { items, hydrated, remove, clearAll, count } = useFavorites();
+  const {
+    count: phCount,
+    hydrated: phHydrated,
+  } = usePhFavorites();
   const [hydrateMap, setHydrateMap] = useState<Map<string, FavoriteHydrateResult>>(
     new Map(),
   );
@@ -85,11 +91,11 @@ export function FavoritesList({ locale }: { locale: string }) {
     [items, hydrateMap],
   );
 
-  if (!hydrated) {
+  if (!hydrated || !phHydrated) {
     return <p className="favorites-loading">{t("loading")}</p>;
   }
 
-  if (count === 0) {
+  if (count === 0 && phCount === 0) {
     return (
       <div className="favorites-empty-wrap">
         <div className="favorites-empty" role="status">
@@ -118,6 +124,8 @@ export function FavoritesList({ locale }: { locale: string }) {
 
   return (
     <div>
+      {count > 0 && (
+        <>
       <div className="favorites-toolbar">
         <p className="favorites-count">
           {t("count", { n: count })}
@@ -258,6 +266,10 @@ export function FavoritesList({ locale }: { locale: string }) {
             );
           })}
       </ul>
+        </>
+      )}
+
+      <PhFavoritesList locale={locale} />
 
       <p className="favorites-privacy">{t("privacyNote")}</p>
     </div>

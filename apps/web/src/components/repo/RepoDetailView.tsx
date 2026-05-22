@@ -107,7 +107,12 @@ export async function RepoDetailView({
         </>
       )}
 
-      {detail.phSignal && <PhDetailPanel signal={detail.phSignal} />}
+      {detail.phSignal && (
+        <PhDetailPanel
+          signal={detail.phSignal}
+          productName={`${detail.owner}/${detail.name}`}
+        />
+      )}
 
       {whyHot.length > 0 && (
         <section className="panel panel--accent" aria-labelledby="why-hot-heading">

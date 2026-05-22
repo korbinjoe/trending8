@@ -1210,9 +1210,69 @@ html {
   line-height: 1.45;
 }
 
-.rank-card__actions--ph {
+.ph-standalone-card .rank-card__top {
+  align-items: center;
+}
+
+.ph-standalone-card .rank-card__title .rank-card__title-text {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.ph-standalone-card .rank-card__stats {
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+}
+
+.ph-standalone-card .rank-card__stats .delta--stars {
+  color: var(--color-accent);
+}
+
+.ph-card__repo-slug {
+  display: inline-flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  align-items: baseline;
+  gap: 0.15rem 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-decoration: none;
+  margin-left: 0.15rem;
+}
+
+.ph-card__repo-slug .owner {
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
+.ph-card__repo-slug .repo {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.ph-card__repo-slug:hover .repo {
+  color: var(--color-accent);
+}
+
+.rank-card__desc--repo {
+  font-size: 0.8125rem;
+}
+
+.btn-icon--ph:hover {
+  border-color: rgba(218, 85, 47, 0.55);
+  color: #e86b4a;
+  background: rgba(218, 85, 47, 0.08);
+}
+
+.btn-icon__ph-mark {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: #da552f;
+}
+
+.btn-icon--ph:hover .btn-icon__ph-mark {
+  color: #e86b4a;
 }
 
 .rank-card__desc--ph-detail {
@@ -1325,6 +1385,13 @@ a.badge-signal--ph:hover {
   justify-content: space-between;
   gap: 0.75rem;
   margin-bottom: 0.65rem;
+}
+
+.ph-panel__head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .ph-panel__title {
@@ -1914,6 +1981,26 @@ a.badge-signal--ph:hover {
   font-size: 0.9rem;
   line-height: 1.55;
   max-width: 40rem;
+}
+
+.favorites-section {
+  margin-top: 2rem;
+}
+
+.favorites-section__head {
+  margin-bottom: 0.75rem;
+}
+
+.favorites-section__title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+}
+
+.favorites-section--ph .favorites-toolbar--section {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .favorites-toolbar {

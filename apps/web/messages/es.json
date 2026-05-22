@@ -83,7 +83,8 @@
     "switching": "Actualizando rankings…",
     "error": "No se pudieron cargar los rankings. Inténtalo de nuevo.",
     "phEmpty": "Aún no hay lanzamientos de Product Hunt en este periodo. Ejecuta PH ingest o amplía el periodo.",
-    "phEmptyLinked": "No hay lanzamientos vinculados a GitHub en este periodo. Prueba「Todos los lanzamientos」o un periodo más corto."
+    "phEmptyLinked": "No hay lanzamientos vinculados a GitHub en este periodo. Prueba「Todos los lanzamientos」o un periodo más corto.",
+    "phScope": "{count} launches in this period (top 24 by votes shown)"
   },
   "tab": {
     "velocity": "Velocidad",
@@ -209,16 +210,16 @@
   },
   "favorites": {
     "title": "Tus favoritos",
-    "subtitle": "Repos guardados en este dispositivo — los más recientes primero. Las métricas se actualizan al abrir esta página.",
+    "subtitle": "Repos and Product Hunt launches saved on this device — newest first. Metrics refresh when you open this page.",
     "save": "Guardar",
     "saved": "Guardado",
     "remove": "Eliminar",
-    "clearAll": "Borrar todo",
+    "clearAll": "Clear all",
     "confirmClear": "Confirmar borrado",
     "cancelClear": "Cancelar",
-    "count": "{n} guardados · máx. 200",
+    "count": "{n} repos · max 200",
     "emptyTitle": "Nada guardado aún",
-    "emptyBody": "Guarda repos desde el ranking de velocidad o el detalle del repositorio — permanecen aquí para tu próxima visita.",
+    "emptyBody": "Save repos from the trending feed or repository detail, and PH launches from the Product Hunt tab or launch pages.",
     "emptyCta": "Explorar tendencias",
     "privacyNote": "Solo local: los favoritos se guardan en este navegador. Borrar datos del sitio o cambiar de dispositivo los elimina.",
     "savedAt": "Guardado {date}",
@@ -230,7 +231,19 @@
     "ariaRemove": "Eliminar {repo} de favoritos",
     "loading": "Cargando…",
     "listLabel": "Repositorios guardados",
-    "hydrateWarning": "No se pudieron actualizar las métricas en vivo. Mostrando instantáneas guardadas."
+    "hydrateWarning": "No se pudieron actualizar las métricas en vivo. Mostrando instantáneas guardadas.",
+    "phSectionTitle": "Product Hunt launches",
+    "phCount": "{n} launches · max 200",
+    "phListLabel": "Saved Product Hunt launches",
+    "phAriaSave": "Save {name} to favorites",
+    "phAriaRemove": "Remove {name} from favorites",
+    "phLimitReached": "You've reached the 200 launch limit. Remove some items first.",
+    "phHydrateWarning": "Could not refresh launch data. Showing saved snapshots.",
+    "phNotFound": "No longer in our index",
+    "phNotFoundHint": "This launch may have been removed from our feed.",
+    "phClearAll": "Clear PH launches",
+    "phIndexedAriaSave": "Save {name} and {repo} to favorites",
+    "phIndexedAriaRemove": "Remove {name} and {repo} from favorites"
   },
   "about": {
     "title": "Acerca de",

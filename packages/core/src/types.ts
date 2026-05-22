@@ -46,6 +46,8 @@ export const FeedItemSchema = z.object({
   isEarlySignal: z.boolean(),
   triggers: z.array(z.string()).optional(),
   phSignal: PhSignalSchema.optional(),
+  /** PH product name when shown on PH feed (may differ from repo `name`). */
+  phProductName: z.string().optional(),
   alternatives: z.array(AlternativeItemSchema).max(2),
   compareUrl: z.string().optional(),
 });
@@ -243,6 +245,49 @@ export type FavoritesHydrateResponse = z.infer<typeof FavoritesHydrateResponseSc
 
 export const FAVORITES_STORAGE_KEY = "gtp-favorites-v1";
 export const FAVORITES_MAX_ITEMS = 200;
+
+export const PhFavoriteSnapshotSchema = z.object({
+  productName: z.string().optional(),
+  tagline: z.string().optional(),
+  votesCount: z.number().int().nonnegative().optional(),
+});
+
+export const PhFavoriteItemSchema = z.object({
+  slug: z.string(),
+  savedAt: z.string(),
+  snapshot: PhFavoriteSnapshotSchema.optional(),
+});
+
+export const PhFavoritesDocumentSchema = z.object({
+  version: z.literal(1),
+  items: z.array(PhFavoriteItemSchema),
+});
+
+export const PhFavoritesHydrateRequestSchema = z.object({
+  slugs: z.array(z.string().min(1)).min(1).max(50),
+});
+
+export const PhFavoriteHydrateResultSchema = z.object({
+  slug: z.string(),
+  found: z.boolean(),
+  productName: z.string().optional(),
+  tagline: z.string().optional(),
+  votesCount: z.number().int().nonnegative().optional(),
+  topics: z.array(z.string()).optional(),
+});
+
+export const PhFavoritesHydrateResponseSchema = z.object({
+  items: z.array(PhFavoriteHydrateResultSchema),
+});
+
+export type PhFavoriteSnapshot = z.infer<typeof PhFavoriteSnapshotSchema>;
+export type PhFavoriteItem = z.infer<typeof PhFavoriteItemSchema>;
+export type PhFavoritesDocument = z.infer<typeof PhFavoritesDocumentSchema>;
+export type PhFavoriteHydrateResult = z.infer<typeof PhFavoriteHydrateResultSchema>;
+export type PhFavoritesHydrateResponse = z.infer<typeof PhFavoritesHydrateResponseSchema>;
+
+export const PH_FAVORITES_STORAGE_KEY = "gtp-ph-favorites-v1";
+export const PH_FAVORITES_MAX_ITEMS = 200;
 
 /** Search results reuse FeedItem shape (rank = result order, alternatives empty). */
 export const SearchResponseSchema = z.object({

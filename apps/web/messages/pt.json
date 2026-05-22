@@ -83,7 +83,8 @@
     "switching": "Atualizando rankings…",
     "error": "Não foi possível carregar os rankings. Tente novamente.",
     "phEmpty": "Ainda não há lançamentos do Product Hunt nesta janela. Execute PH ingest ou amplie o período.",
-    "phEmptyLinked": "Nenhum lançamento vinculado ao GitHub nesta janela. Tente「Todos os lançamentos」ou um período mais curto."
+    "phEmptyLinked": "Nenhum lançamento vinculado ao GitHub nesta janela. Tente「Todos os lançamentos」ou um período mais curto.",
+    "phScope": "{count} launches in this period (top 24 by votes shown)"
   },
   "tab": {
     "velocity": "Velocity",
@@ -209,16 +210,16 @@
   },
   "favorites": {
     "title": "Seus favoritos",
-    "subtitle": "Repos salvos neste dispositivo — mais recentes primeiro. Métricas atualizam ao abrir esta página.",
+    "subtitle": "Repos and Product Hunt launches saved on this device — newest first. Metrics refresh when you open this page.",
     "save": "Salvar",
     "saved": "Salvo",
     "remove": "Remover",
-    "clearAll": "Limpar tudo",
+    "clearAll": "Clear all",
     "confirmClear": "Confirmar limpeza",
     "cancelClear": "Cancelar",
-    "count": "{n} salvos · máx. 200",
+    "count": "{n} repos · max 200",
     "emptyTitle": "Nada salvo ainda",
-    "emptyBody": "Salve repos do ranking velocity ou da página do repositório — ficam aqui para sua próxima visita.",
+    "emptyBody": "Save repos from the trending feed or repository detail, and PH launches from the Product Hunt tab or launch pages.",
     "emptyCta": "Explorar trending",
     "privacyNote": "Somente local: favoritos ficam neste navegador. Limpar dados do site ou trocar de dispositivo os remove.",
     "savedAt": "Salvo {date}",
@@ -230,7 +231,19 @@
     "ariaRemove": "Remover {repo} dos favoritos",
     "loading": "Carregando…",
     "listLabel": "Repositórios salvos",
-    "hydrateWarning": "Não foi possível atualizar métricas ao vivo. Exibindo snapshots salvos."
+    "hydrateWarning": "Não foi possível atualizar métricas ao vivo. Exibindo snapshots salvos.",
+    "phSectionTitle": "Product Hunt launches",
+    "phCount": "{n} launches · max 200",
+    "phListLabel": "Saved Product Hunt launches",
+    "phAriaSave": "Save {name} to favorites",
+    "phAriaRemove": "Remove {name} from favorites",
+    "phLimitReached": "You've reached the 200 launch limit. Remove some items first.",
+    "phHydrateWarning": "Could not refresh launch data. Showing saved snapshots.",
+    "phNotFound": "No longer in our index",
+    "phNotFoundHint": "This launch may have been removed from our feed.",
+    "phClearAll": "Clear PH launches",
+    "phIndexedAriaSave": "Save {name} and {repo} to favorites",
+    "phIndexedAriaRemove": "Remove {name} and {repo} from favorites"
   },
   "about": {
     "title": "Sobre",
