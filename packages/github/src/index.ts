@@ -17,7 +17,8 @@ export {
 export { OssInsightClient, OssInsightRateLimitError } from "./ossinsight-client";
 export type { IngestLogger } from "./ingest-logger";
 export { defaultIngestLogger } from "./ingest-logger";
-export { runRankingBatch, getLatestRankingRunId } from "./ranking-batch";
+export { runRankingBatch, failStaleRankingRuns, getLatestRankingRunId } from "./ranking-batch";
+export { buildRankingInputs } from "./ranking-inputs";
 export {
   computeAlternativesForPeriod,
   getAlternativesForRepo,

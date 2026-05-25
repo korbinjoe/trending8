@@ -1,8 +1,12 @@
 {
   "crons": [
     {
-      "path": "/api/cron/ingest?ranking=true",
+      "path": "/api/cron/ingest",
       "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/ranking",
+      "schedule": "30 8 * * *"
     },
     {
       "path": "/api/cron/ph-ingest",

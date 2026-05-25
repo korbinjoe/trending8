@@ -35,16 +35,13 @@ async function handleIngest(request: Request) {
     return errorResponse("GITHUB_TOKEN not configured", 500);
   }
 
-  const { searchParams } = new URL(request.url);
-  const ranking = searchParams.get("ranking") === "true";
   const started = Date.now();
 
-  ingestLogger.info("cron_ingest_start", { ranking });
+  ingestLogger.info("cron_ingest_start");
 
   try {
-    const result = await runIngest({ ranking, logger: ingestLogger });
+    const result = await runIngest({ logger: ingestLogger });
     revalidateTag("feed");
-    revalidateTag("ranking");
     revalidateTag("topics");
 
     ingestLogger.info("cron_ingest_complete", {
