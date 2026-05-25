@@ -8,6 +8,7 @@ import {
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 function isMacPlatform(): boolean {
   if (typeof navigator === "undefined") {
@@ -21,10 +22,16 @@ export function HeaderSearch() {
   const router = useRouter();
   const pathname = usePathname();
   const inputRef = useRef<HTMLInputElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState("");
   const [expanded, setExpanded] = useState(false);
   const [focused, setFocused] = useState(false);
   const [shortcutLabel, setShortcutLabel] = useState("Ctrl+K");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     setShortcutLabel(isMacPlatform() ? "⌘K" : "Ctrl+K");
@@ -37,6 +44,42 @@ export function HeaderSearch() {
   }, [pathname]);
 
   useEffect(() => {
+    if (!expanded) return;
+    function handleClickOutside(event: MouseEvent) {
+      if (overlayRef.current && overlayRef.current.contains(event.target as Node)) {
+        return;
+      }
+      const target = event.target as HTMLElement;
+      if (!target.closest(".header-search")) {
+        setExpanded(false);
+      }
+    }
+    document.addEventListener("pointerdown", handleClickOutside);
+    return () => document.removeEventListener("pointerdown", handleClickOutside);
+  }, [expanded]);
+
+  useEffect(() => {
+    if (!expanded) return;
+    function handleDismiss(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setExpanded(false);
+      }
+    }
+    document.addEventListener("keydown", handleDismiss);
+    return () => document.removeEventListener("keydown", handleDismiss);
+  }, [expanded]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(
+      "search-overlay-open",
+      expanded,
+    );
+    return () => {
+      document.documentElement.classList.remove("search-overlay-open");
+    };
+  }, [expanded]);
+
+  useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key !== "k" && event.key !== "K") {
         return;
@@ -47,8 +90,10 @@ export function HeaderSearch() {
       event.preventDefault();
       setExpanded(true);
       setFocused(true);
-      inputRef.current?.focus();
-      inputRef.current?.select();
+      requestAnimationFrame(() => {
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      });
     }
 
     document.addEventListener("keydown", handleKeyDown);
@@ -74,6 +119,47 @@ export function HeaderSearch() {
   const searchClass =
     focused || expanded ? "header-search is-expanded" : "header-search";
 
+  const overlay = mounted && expanded ? createPortal(
+    <div
+      ref={overlayRef}
+      className="header-search__overlay"
+      aria-hidden="true"
+      onClick={() => setExpanded(false)}
+    />,
+    document.body,
+  ) : null;
+
+  const mobileForm = mounted && expanded ? createPortal(
+    <form
+      className="header-search__form header-search__form--mobile is-open"
+      role="search"
+      onSubmit={handleSubmit}
+    >
+      <label className="visually-hidden" htmlFor="header-search-input-mobile">
+        {t("headerPlaceholder")}
+      </label>
+      <span className="header-search__field">
+        <input
+          ref={inputRef}
+          id="header-search-input-mobile"
+          type="search"
+          className="header-search__input"
+          placeholder={t("headerPlaceholder")}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          autoComplete="off"
+          enterKeyHint="search"
+        />
+      </span>
+      <button type="submit" className="header-search__submit">
+        {t("submit")}
+      </button>
+    </form>,
+    document.body,
+  ) : null;
+
   return (
     <div className={searchClass}>
       <button
@@ -91,7 +177,7 @@ export function HeaderSearch() {
         <SearchIcon />
       </button>
       <form
-        className={`header-search__form${expanded ? " is-open" : ""}`}
+        className="header-search__form"
         role="search"
         onSubmit={handleSubmit}
       >
@@ -123,6 +209,8 @@ export function HeaderSearch() {
           {t("submit")}
         </button>
       </form>
+      {overlay}
+      {mobileForm}
     </div>
   );
 }
