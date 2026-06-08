@@ -22,6 +22,7 @@ export function HeaderSearch() {
   const router = useRouter();
   const pathname = usePathname();
   const inputRef = useRef<HTMLInputElement>(null);
+  const mobileInputRef = useRef<HTMLInputElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState("");
   const [expanded, setExpanded] = useState(false);
@@ -80,6 +81,16 @@ export function HeaderSearch() {
   }, [expanded]);
 
   useEffect(() => {
+    if (expanded) {
+      const timer = setTimeout(() => {
+        const target = mobileInputRef.current ?? inputRef.current;
+        target?.focus();
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [expanded]);
+
+  useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key !== "k" && event.key !== "K") {
         return;
@@ -90,10 +101,6 @@ export function HeaderSearch() {
       event.preventDefault();
       setExpanded(true);
       setFocused(true);
-      requestAnimationFrame(() => {
-        inputRef.current?.focus();
-        inputRef.current?.select();
-      });
     }
 
     document.addEventListener("keydown", handleKeyDown);
@@ -140,7 +147,7 @@ export function HeaderSearch() {
       </label>
       <span className="header-search__field">
         <input
-          ref={inputRef}
+          ref={mobileInputRef}
           id="header-search-input-mobile"
           type="search"
           className="header-search__input"
@@ -151,6 +158,7 @@ export function HeaderSearch() {
           onBlur={() => setFocused(false)}
           autoComplete="off"
           enterKeyHint="search"
+          autoFocus
         />
       </span>
       <button type="submit" className="header-search__submit">
@@ -169,9 +177,6 @@ export function HeaderSearch() {
         aria-expanded={expanded}
         onClick={() => {
           setExpanded((v) => !v);
-          if (!expanded) {
-            requestAnimationFrame(() => inputRef.current?.focus());
-          }
         }}
       >
         <SearchIcon />
