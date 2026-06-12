@@ -135,7 +135,8 @@
     "openCharts": "Открыть графики",
     "analyze": "Анализ на OSS Insight",
     "shareX": "Поделиться в X",
-    "shareTop8": "Поделиться Топ-8"
+    "shareTop8": "Поделиться Топ-8",
+    "imageCopied": "📋 Изображение скопировано — вставьте в твит (⌘V)"
   },
   "chartModal": {
     "close": "Закрыть",

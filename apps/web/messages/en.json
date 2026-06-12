@@ -135,7 +135,8 @@
     "openCharts": "Open charts",
     "analyze": "Analyze on OSS Insight",
     "shareX": "Share on X",
-    "shareTop8": "Share Top 8"
+    "shareTop8": "Share Top 8",
+    "imageCopied": "📋 Image copied — paste in your tweet (⌘V)"
   },
   "chartModal": {
     "close": "Close",

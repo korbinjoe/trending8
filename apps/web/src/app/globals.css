@@ -1128,6 +1128,7 @@ html {
 
 .btn--x {
   gap: 0.5rem;
+  cursor: pointer;
 }
 
 .btn--x:hover {
@@ -1139,6 +1140,33 @@ html {
 .btn--x .btn-icon__svg {
   width: 0.875rem;
   height: 0.875rem;
+}
+
+.share-toast {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-surface, #1e2430);
+  color: var(--color-accent, #3dd68c);
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: share-toast-in 0.2s ease-out, share-toast-out 0.3s 3.5s ease-in forwards;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+@keyframes share-toast-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes share-toast-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 
 .health {

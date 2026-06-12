@@ -135,7 +135,8 @@
     "openCharts": "チャートを開く",
     "analyze": "OSS Insight で分析",
     "shareX": "X でシェア",
-    "shareTop8": "Top 8 をシェア"
+    "shareTop8": "Top 8 をシェア",
+    "imageCopied": "📋 画像をコピーしました。ツイートに貼り付けてください (⌘V)"
   },
   "chartModal": {
     "close": "閉じる",

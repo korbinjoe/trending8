@@ -199,6 +199,7 @@ export function FilterBar({ topicFilters }: FilterBarProps) {
             <ShareToX
               text={top8.text}
               url={top8.url}
+              captureSelector=".rank-list"
               variant="button"
               label={ctaT("shareTop8")}
             />

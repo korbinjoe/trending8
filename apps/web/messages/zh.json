@@ -135,7 +135,8 @@
     "openCharts": "打开曲线",
     "analyze": "OSS Insight 分析",
     "shareX": "分享到 X",
-    "shareTop8": "分享 Top 8"
+    "shareTop8": "分享 Top 8",
+    "imageCopied": "📋 图片已复制，在推文中粘贴 (⌘V)"
   },
   "chartModal": {
     "close": "关闭",

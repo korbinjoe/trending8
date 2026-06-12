@@ -28,3 +28,4 @@ research/
 .claude/
 .opencode/
 .playwright-mcp/
+.playwright-cli/
