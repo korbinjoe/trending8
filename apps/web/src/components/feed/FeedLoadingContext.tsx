@@ -11,6 +11,7 @@ import {
 interface Top8Data {
   text: string;
   url: string;
+  period: string;
 }
 
 interface FeedLoadingContextValue {

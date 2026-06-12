@@ -66,32 +66,22 @@ export function buildPhCardTweet(
   return `${header}${desc}${suffix}`;
 }
 
+const PERIOD_HEADER: Record<string, string> = {
+  today: "Today's",
+  week: "This Week's",
+  month: "This Month's",
+  halfYear: "Past 6 Months'",
+  year: "This Year's",
+};
+
 export function buildTop8Tweet(
   items: { owner: string; name: string; description: string; deltaStars: number }[],
+  period: string = "today",
 ): string {
-  const header = "🔥 Today's Top 8 on GitHub\n\n";
-  const footer = "\n\nvia #Trending8";
-  const budget = MAX_TWEET_LENGTH - URL_DISPLAY_LENGTH - 1 - header.length - footer.length;
+  const label = PERIOD_HEADER[period] ?? "Today's";
   const top = items.slice(0, 8);
-
-  const bases = top.map(({ owner, name, deltaStars }, i) => {
-    const stars = deltaStars > 0 ? ` +${deltaStars}★` : "";
-    return `${i + 1}. ${owner}/${name}${stars}`;
-  });
-  const baseLen = bases.join("\n").length;
-  const perItem = Math.floor((budget - baseLen) / top.length) - 4;
-
-  if (perItem >= 3) {
-    const lines = top.map(({ owner, name, description, deltaStars }, i) => {
-      const stars = deltaStars > 0 ? ` +${deltaStars}★` : "";
-      const desc = description ? ` — ${truncate(description, perItem)}` : "";
-      return `${i + 1}. ${owner}/${name}${desc}${stars}`;
-    });
-    const text = lines.join("\n");
-    if (text.length <= budget) return `${header}${text}${footer}`;
-  }
-
-  return `${header}${bases.join("\n")}${footer}`;
+  const totalStars = top.reduce((sum, r) => sum + r.deltaStars, 0);
+  return `🔥 ${label} Top 8 trending repos on GitHub — ${totalStars.toLocaleString()}+ stars combined\n\nvia #Trending8`;
 }
 
 export function buildShareUrl(text: string, url: string): string {

@@ -272,13 +272,14 @@ export function FeedListClient({
   useEffect(() => {
     if (!isPhView && githubItems.length >= 8) {
       setTop8({
-        text: buildTop8Tweet(githubItems.slice(0, 8)),
-        url: getSiteUrl(),
+        text: buildTop8Tweet(githubItems.slice(0, 8), period),
+        url: `${getSiteUrl()}/top8/${period}`,
+        period,
       });
     } else {
       setTop8(null);
     }
-  }, [isPhView, githubItems, setTop8]);
+  }, [isPhView, githubItems, period, setTop8]);
 
   const itemCount = isPhView ? phItems.length : githubItems.length;
 
