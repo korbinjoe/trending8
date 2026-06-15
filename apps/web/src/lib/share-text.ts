@@ -74,6 +74,22 @@ const PERIOD_HEADER: Record<string, string> = {
   year: "This Year's",
 };
 
+const TOP8_FOOTER = "\n\nFull ranking → #Trending8";
+
+function formatCompactDelta(n: number): string {
+  if (n >= 10000) return `+${Math.round(n / 1000)}k`;
+  if (n >= 1000) {
+    const k = n / 1000;
+    const rounded = k >= 10 ? Math.round(k) : Math.round(k * 10) / 10;
+    return `+${String(rounded).replace(/\.0$/, "")}k`;
+  }
+  return `+${n}`;
+}
+
+function tweetTextBudget(extraFooter = TOP8_FOOTER): number {
+  return MAX_TWEET_LENGTH - URL_DISPLAY_LENGTH - 1 - extraFooter.length;
+}
+
 export function buildTop8Tweet(
   items: { owner: string; name: string; description: string; deltaStars: number }[],
   period: string = "today",
@@ -81,7 +97,28 @@ export function buildTop8Tweet(
   const label = PERIOD_HEADER[period] ?? "Today's";
   const top = items.slice(0, 8);
   const totalStars = top.reduce((sum, r) => sum + r.deltaStars, 0);
-  return `🔥 ${label} Top 8 trending repos on GitHub — ${totalStars.toLocaleString()}+ stars combined\n\nvia #Trending8`;
+  const header = `🔥 ${label} Top 8 on GitHub (+${totalStars.toLocaleString()}⭐)\n\n`;
+  const budget = tweetTextBudget();
+
+  for (let count = Math.min(3, top.length); count >= 0; count--) {
+    const bodyBudget = budget - header.length;
+    if (count === 0) {
+      return `${header.trimEnd()}${TOP8_FOOTER}`;
+    }
+
+    const lines = top.slice(0, count).map((r, i) =>
+      `${i + 1}. ${r.owner}/${r.name} ${formatCompactDelta(r.deltaStars)}`,
+    );
+    if (top.length > count) {
+      lines.push(`…+${top.length - count} more`);
+    }
+    const body = lines.join("\n");
+    if (body.length <= bodyBudget) {
+      return `${header}${body}${TOP8_FOOTER}`;
+    }
+  }
+
+  return `🔥 ${label} Top 8 on GitHub (+${totalStars.toLocaleString()}⭐)${TOP8_FOOTER}`;
 }
 
 export function buildShareUrl(text: string, url: string): string {
