@@ -136,7 +136,11 @@
     "analyze": "Auf OSS Insight analysieren",
     "shareX": "Auf X teilen",
     "shareTop8": "Top 8 teilen",
-    "imageCopied": "📋 Bild kopiert — im Tweet einfügen (⌘V)"
+    "imageCopied": "📋 Bild kopiert — im Tweet einfügen (⌘V)",
+    "linkReplyHint": "📋 Bild kopiert — im Tweet einfügen (⌘V). Antworte mit dem Link für maximale Reichweite ↓",
+    "copyLink": "Link kopieren",
+    "linkCopied": "Kopiert!",
+    "close": "Schließen"
   },
   "chartModal": {
     "close": "Schließen",

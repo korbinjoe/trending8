@@ -136,7 +136,11 @@
     "analyze": "OSS Insight で分析",
     "shareX": "X でシェア",
     "shareTop8": "Top 8 をシェア",
-    "imageCopied": "📋 画像をコピーしました。ツイートに貼り付けてください (⌘V)"
+    "imageCopied": "📋 画像をコピーしました。ツイートに貼り付けてください (⌘V)",
+    "linkReplyHint": "📋 画像をコピーしました。ツイートに貼り付けてください (⌘V)。リプライにリンクを投稿するとリーチが最大化 ↓",
+    "copyLink": "リンクをコピー",
+    "linkCopied": "コピー済み！",
+    "close": "閉じる"
   },
   "chartModal": {
     "close": "閉じる",

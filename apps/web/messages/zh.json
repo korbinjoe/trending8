@@ -136,7 +136,11 @@
     "analyze": "OSS Insight 分析",
     "shareX": "分享到 X",
     "shareTop8": "分享 Top 8",
-    "imageCopied": "📋 图片已复制，在推文中粘贴 (⌘V)"
+    "imageCopied": "📋 图片已复制，在推文中粘贴 (⌘V)",
+    "linkReplyHint": "📋 图片已复制，在推文中粘贴 (⌘V)。在回复中带上链接可获得最大曝光 ↓",
+    "copyLink": "复制链接",
+    "linkCopied": "已复制！",
+    "close": "关闭"
   },
   "chartModal": {
     "close": "关闭",

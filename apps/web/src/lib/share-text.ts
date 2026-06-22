@@ -122,6 +122,7 @@ export function buildTop8Tweet(
 }
 
 export function buildShareUrl(text: string, url: string): string {
-  const params = new URLSearchParams({ text, url });
+  const params = new URLSearchParams({ text });
+  if (url) params.set("url", url);
   return `https://x.com/intent/tweet?${params.toString()}`;
 }

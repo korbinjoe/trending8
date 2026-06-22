@@ -136,7 +136,11 @@
     "analyze": "Analyze on OSS Insight",
     "shareX": "Share on X",
     "shareTop8": "Share Top 8",
-    "imageCopied": "📋 Image copied — paste in your tweet (⌘V)"
+    "imageCopied": "📋 Image copied — paste in your tweet (⌘V)",
+    "linkReplyHint": "📋 Image copied — paste in your tweet (⌘V). Reply with the link for max reach ↓",
+    "copyLink": "Copy link",
+    "linkCopied": "Copied!",
+    "close": "Close"
   },
   "chartModal": {
     "close": "Close",

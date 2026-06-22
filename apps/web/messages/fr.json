@@ -135,7 +135,12 @@
     "openCharts": "Ouvrir les graphiques",
     "analyze": "Analyser sur OSS Insight",
     "shareX": "Partager sur X",
-    "shareTop8": "Partager le Top 8"
+    "shareTop8": "Partager le Top 8",
+    "imageCopied": "📋 Image copiée — collez-la dans votre tweet (⌘V)",
+    "linkReplyHint": "📋 Image copiée — collez-la dans votre tweet (⌘V). Répondez avec le lien pour une portée maximale ↓",
+    "copyLink": "Copier le lien",
+    "linkCopied": "Copié !",
+    "close": "Fermer"
   },
   "chartModal": {
     "close": "Fermer",

@@ -135,7 +135,12 @@
     "openCharts": "فتح المخططات",
     "analyze": "تحليل على OSS Insight",
     "shareX": "مشاركة على X",
-    "shareTop8": "مشاركة أفضل 8"
+    "shareTop8": "مشاركة أفضل 8",
+    "imageCopied": "📋 تم نسخ الصورة — الصقها في تغريدتك (⌘V)",
+    "linkReplyHint": "📋 تم نسخ الصورة — الصقها في تغريدتك (⌘V). أجب بالرابط لأقصى وصول ↓",
+    "copyLink": "نسخ الرابط",
+    "linkCopied": "تم النسخ!",
+    "close": "إغلاق"
   },
   "chartModal": {
     "close": "إغلاق",

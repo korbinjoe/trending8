@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildTop8Tweet } from "./share-text";
+import { buildShareUrl, buildTop8Tweet } from "./share-text";
 
 const SAMPLE = [
   { owner: "vercel", name: "next.js", description: "The React Framework", deltaStars: 2400 },
@@ -15,7 +15,7 @@ const SAMPLE = [
 describe("buildTop8Tweet", () => {
   it("lists top repos with compact deltas and stays within tweet budget", () => {
     const text = buildTop8Tweet(SAMPLE, "today");
-    expect(text).toContain("🔥 Today's Top 8 on GitHub (+7,600⭐)");
+    expect(text).toContain("🔥 Today's Top 8 on GitHub (+9,200⭐)");
     expect(text).toContain("1. vercel/next.js +2.4k");
     expect(text).toContain("2. facebook/react +1.8k");
     expect(text).toContain("3. langchain-ai/langchain +1.2k");
@@ -38,5 +38,19 @@ describe("buildTop8Tweet", () => {
     const text = buildTop8Tweet(long, "today");
     expect(text.length + 23 + 1).toBeLessThanOrEqual(280);
     expect(text).toContain("Full ranking → #Trending8");
+  });
+});
+
+describe("buildShareUrl", () => {
+  it("includes the url param when a url is provided", () => {
+    const u = buildShareUrl("hello", "https://trending8.example/top8/today");
+    expect(u).toContain("text=hello");
+    expect(u).toContain("url=https%3A%2F%2Ftrending8.example");
+  });
+
+  it("omits the url param when empty (方案 A: link in reply)", () => {
+    const u = buildShareUrl("hello", "");
+    expect(u).toContain("text=hello");
+    expect(u).not.toContain("url=");
   });
 });

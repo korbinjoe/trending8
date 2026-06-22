@@ -135,7 +135,12 @@
     "openCharts": "차트 열기",
     "analyze": "OSS Insight에서 분석",
     "shareX": "X에 공유",
-    "shareTop8": "Top 8 공유"
+    "shareTop8": "Top 8 공유",
+    "imageCopied": "📋 이미지가 복사됨 — 트윗에 붙여넣기 (⌘V)",
+    "linkReplyHint": "📋 이미지가 복사됨 — 트윗에 붙여넣기 (⌘V). 답글에 링크를 올리면 도달률이 최대화 ↓",
+    "copyLink": "링크 복사",
+    "linkCopied": "복사됨!",
+    "close": "닫기"
   },
   "chartModal": {
     "close": "닫기",
