@@ -94,7 +94,7 @@ export function ShareToX({
   label: customLabel,
   captureSelector,
   captureCount = 8,
-  linkInReply = false,
+  linkInReply = true,
 }: ShareToXProps) {
   const t = useTranslations("cta");
   const label = customLabel ?? t("shareX");

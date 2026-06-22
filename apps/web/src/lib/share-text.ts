@@ -1,5 +1,4 @@
 const MAX_TWEET_LENGTH = 280;
-const URL_DISPLAY_LENGTH = 23; // X counts all URLs as 23 chars
 
 function truncate(text: string, maxLen: number): string {
   if (text.length <= maxLen) return text;
@@ -14,7 +13,7 @@ export function buildRepoCardTweet(
 ): string {
   const suffix = ` | +${deltaStars} ⭐ via #Trending8`;
   const header = `🔥 ${owner}/${name}`;
-  const budget = MAX_TWEET_LENGTH - URL_DISPLAY_LENGTH - 1 - header.length - suffix.length - 3;
+  const budget = MAX_TWEET_LENGTH - header.length - suffix.length - 3;
   const desc = description ? ` — ${truncate(description, budget)}` : "";
   return `${header}${desc}${suffix}`;
 }
@@ -37,7 +36,7 @@ export function buildRepoTweet(
   const period = PERIOD_EN[periodKey] ?? "today";
   const header = `🔥 ${owner}/${name}`;
   const footer = `⭐ +${deltaStars} stars this ${period}\n\nvia #Trending8`;
-  const budget = MAX_TWEET_LENGTH - URL_DISPLAY_LENGTH - 1 - header.length - footer.length - 4;
+  const budget = MAX_TWEET_LENGTH - header.length - footer.length - 4;
   const desc = description ? ` — ${truncate(description, budget)}` : "";
   return `${header}${desc}\n\n${footer}`;
 }
@@ -49,7 +48,7 @@ export function buildLaunchTweet(
 ): string {
   const header = `🚀 ${productName}`;
   const footer = `🏆 ${votesCount} upvotes on Product Hunt\n\nvia #Trending8`;
-  const budget = MAX_TWEET_LENGTH - URL_DISPLAY_LENGTH - 1 - header.length - footer.length - 4;
+  const budget = MAX_TWEET_LENGTH - header.length - footer.length - 4;
   const desc = tagline ? ` — ${truncate(tagline, budget)}` : "";
   return `${header}${desc}\n\n${footer}`;
 }
@@ -61,7 +60,7 @@ export function buildPhCardTweet(
 ): string {
   const suffix = ` | ${votesCount} upvotes via #Trending8`;
   const header = `🚀 ${productName}`;
-  const budget = MAX_TWEET_LENGTH - URL_DISPLAY_LENGTH - 1 - header.length - suffix.length - 3;
+  const budget = MAX_TWEET_LENGTH - header.length - suffix.length - 3;
   const desc = tagline ? ` — ${truncate(tagline, budget)}` : "";
   return `${header}${desc}${suffix}`;
 }
@@ -87,7 +86,7 @@ function formatCompactDelta(n: number): string {
 }
 
 function tweetTextBudget(extraFooter = TOP8_FOOTER): number {
-  return MAX_TWEET_LENGTH - URL_DISPLAY_LENGTH - 1 - extraFooter.length;
+  return MAX_TWEET_LENGTH - extraFooter.length;
 }
 
 export function buildTop8Tweet(
@@ -100,7 +99,7 @@ export function buildTop8Tweet(
   const header = `🔥 ${label} Top 8 on GitHub (+${totalStars.toLocaleString()}⭐)\n\n`;
   const budget = tweetTextBudget();
 
-  for (let count = Math.min(3, top.length); count >= 0; count--) {
+  for (let count = top.length; count >= 0; count--) {
     const bodyBudget = budget - header.length;
     if (count === 0) {
       return `${header.trimEnd()}${TOP8_FOOTER}`;

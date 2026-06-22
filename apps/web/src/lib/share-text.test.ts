@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildShareUrl, buildTop8Tweet } from "./share-text";
+import { buildRepoCardTweet, buildRepoTweet, buildShareUrl, buildTop8Tweet } from "./share-text";
 
 const SAMPLE = [
   { owner: "vercel", name: "next.js", description: "The React Framework", deltaStars: 2400 },
@@ -12,6 +12,29 @@ const SAMPLE = [
   { owner: "tailwindlabs", name: "tailwindcss", description: "Utility-first CSS", deltaStars: 540 },
 ];
 
+describe("buildRepoCardTweet", () => {
+  it("uses full text budget and omits urls from copy", () => {
+    const desc =
+      "Local-first, open-source alternative to Anthropic Claude Design. Bring your own API keys. Works offline. MIT licensed. Supports plugins and custom themes for agent workflows.";
+    const text = buildRepoCardTweet("nexu-io", "open-design", desc, 1159);
+    expect(text).toContain("nexu-io/open-design");
+    expect(text).toContain("+1159");
+    expect(text).not.toMatch(/https?:\/\//);
+    expect(text.length).toBeLessThanOrEqual(280);
+  });
+});
+
+describe("buildRepoTweet", () => {
+  it("uses full text budget and omits urls from copy", () => {
+    const desc =
+      "Local-first, open-source alternative to Anthropic Claude Design. Bring your own API keys. Works offline.";
+    const text = buildRepoTweet("nexu-io", "open-design", desc, 1159, "filter.today");
+    expect(text).toContain("stars this today");
+    expect(text).not.toMatch(/https?:\/\//);
+    expect(text.length).toBeLessThanOrEqual(280);
+  });
+});
+
 describe("buildTop8Tweet", () => {
   it("lists top repos with compact deltas and stays within tweet budget", () => {
     const text = buildTop8Tweet(SAMPLE, "today");
@@ -19,9 +42,11 @@ describe("buildTop8Tweet", () => {
     expect(text).toContain("1. vercel/next.js +2.4k");
     expect(text).toContain("2. facebook/react +1.8k");
     expect(text).toContain("3. langchain-ai/langchain +1.2k");
-    expect(text).toContain("…+5 more");
+    expect(text).toContain("4. ollama/ollama +980");
+    expect(text).toContain("7. microsoft/vscode +650");
+    expect(text).toContain("…+1 more");
     expect(text).toContain("Full ranking → #Trending8");
-    expect(text.length + 23 + 1).toBeLessThanOrEqual(280);
+    expect(text.length).toBeLessThanOrEqual(280);
   });
 
   it("uses period-specific header labels", () => {
@@ -36,7 +61,7 @@ describe("buildTop8Tweet", () => {
       name: `extremely-long-repository-name-${i}`,
     }));
     const text = buildTop8Tweet(long, "today");
-    expect(text.length + 23 + 1).toBeLessThanOrEqual(280);
+    expect(text.length).toBeLessThanOrEqual(280);
     expect(text).toContain("Full ranking → #Trending8");
   });
 });

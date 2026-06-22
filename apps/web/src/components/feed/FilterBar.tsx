@@ -202,7 +202,6 @@ export function FilterBar({ topicFilters }: FilterBarProps) {
               captureSelector=".rank-list"
               variant="button"
               label={ctaT("shareTop8")}
-              linkInReply
             />
           )}
         </div>
